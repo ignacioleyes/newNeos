@@ -2,15 +2,43 @@ import { Link } from "react-router-dom";
 import { projects, type Project } from "../../data/projects";
 import { Reveal } from "../ui/Reveal";
 
-function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
+interface SpecItem {
+  label: string;
+  value: string;
+}
+
+function getFeaturedSpecs(project: Project): SpecItem[] {
+  const specs: SpecItem[] = [];
+  if (project.units) specs.push({ label: "Unidades", value: project.units });
+  if (project.tipologias)
+    specs.push({ label: "Tipología", value: project.tipologias });
+  if (project.amenities && project.amenities.length > 0)
+    specs.push({
+      label: "Amenities",
+      value: `${project.amenities.length} amenities`,
+    });
+  if (project.investment)
+    specs.push({ label: "Inversión", value: project.investment });
+  return specs.slice(0, 4);
+}
+
+function ProjectCard({
+  project,
+  featured = false,
+}: {
+  project: Project;
+  featured?: boolean;
+}) {
+  const specs = featured ? getFeaturedSpecs(project) : [];
+
   return (
     <Link
       id={project.slug}
       to={`/proyectos/${project.slug}`}
-      className="group relative block h-full overflow-hidden rounded-2xl border border-base-300/60 bg-base-200 hover:border-primary/60 transition-all duration-500"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-base-300/60 bg-base-200 hover:border-primary/60 transition-all duration-500"
     >
       <div
-        className={`relative ${featured ? "aspect-[16/12]" : "aspect-[4/5]"} overflow-hidden bg-gradient-to-br ${project.gradient}`}
+        className={`relative ${featured ? "aspect-[16/12]" : "aspect-[4/5]"} flex-shrink-0 overflow-hidden bg-gradient-to-br ${project.gradient}`}
       >
         {/* Real hero image */}
         <img
@@ -57,25 +85,62 @@ function ProjectCard({ project, featured = false }: { project: Project; featured
               {project.name}
             </h3>
           )}
-          <p className={`mt-3 opacity-85 max-w-md ${featured ? "text-base" : "text-sm"}`}>
+          <p
+            className={`mt-3 opacity-85 max-w-md ${featured ? "text-base" : "text-sm"}`}
+          >
             {project.tagline}
           </p>
         </div>
       </div>
 
-      <div className="p-6 flex items-center justify-between border-t border-base-300/60">
-        <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs opacity-75">
-          {project.highlights.slice(0, featured ? 3 : 2).map((h) => (
-            <li key={h} className="flex items-center gap-1.5">
-              <span className="h-1 w-1 rounded-full bg-primary" />
-              {h}
-            </li>
-          ))}
-        </ul>
-        <span className="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 whitespace-nowrap">
-          Ver proyecto →
-        </span>
-      </div>
+      {featured ? (
+        <div className="flex flex-1 flex-col gap-5 p-6 lg:p-8 border-t border-base-300/60">
+          <p className="opacity-80 leading-relaxed text-sm lg:text-base">
+            {project.description}
+          </p>
+
+          {specs.length > 0 && (
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-4 py-4 border-y border-base-300/40">
+              {specs.map((s) => (
+                <div key={s.label}>
+                  <dt className="text-[10px] uppercase tracking-widest text-primary mb-1">
+                    {s.label}
+                  </dt>
+                  <dd className="text-sm leading-tight">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          <div className="mt-auto flex items-center justify-between gap-4">
+            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs opacity-75">
+              {project.highlights.slice(0, 3).map((h) => (
+                <li key={h} className="flex items-center gap-1.5">
+                  <span className="h-1 w-1 rounded-full bg-primary" />
+                  {h}
+                </li>
+              ))}
+            </ul>
+            <span className="inline-flex items-center gap-1 text-primary text-sm font-medium opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300 whitespace-nowrap">
+              Ver proyecto →
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="p-6 flex items-center justify-between border-t border-base-300/60">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs opacity-75">
+            {project.highlights.slice(0, 2).map((h) => (
+              <li key={h} className="flex items-center gap-1.5">
+                <span className="h-1 w-1 rounded-full bg-primary" />
+                {h}
+              </li>
+            ))}
+          </ul>
+          <span className="text-primary text-sm font-medium opacity-0 group-hover:opacity-100 group-hover:translate-x-0 -translate-x-2 transition-all duration-300 whitespace-nowrap">
+            Ver proyecto →
+          </span>
+        </div>
+      )}
     </Link>
   );
 }

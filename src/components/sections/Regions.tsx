@@ -1,6 +1,6 @@
 import { regions } from "../../data/regions";
-import { TopoPattern } from "../ui/TopoPattern";
 import { Reveal } from "../ui/Reveal";
+import { RegionMap } from "../ui/RegionMap";
 
 export function Regions() {
   return (
@@ -11,21 +11,26 @@ export function Regions() {
             Dónde construimos
           </p>
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-            5 regiones, una <em className="not-italic text-primary">misma lectura</em> del territorio.
+            Distintas regiones, una <em className="not-italic text-primary">misma lectura</em> del territorio.
           </h2>
         </Reveal>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {regions.map((r, idx) => (
             <Reveal key={r.slug} delay={idx * 100}>
-              <div className="group relative overflow-hidden rounded-xl border border-base-300/60 aspect-[3/4] hover:border-primary/60 transition-colors h-full">
-                <div className={`absolute inset-0 bg-gradient-to-br ${r.gradient}`} />
-                <TopoPattern
-                  className="absolute inset-0 w-full h-full text-primary group-hover:scale-110 transition-transform duration-[1500ms]"
-                  opacity={0.3}
+              <div className="group relative overflow-hidden rounded-xl border border-base-300/60 bg-base-200 aspect-[3/4] hover:border-primary/60 transition-colors h-full">
+                {/* Real map + dots */}
+                <RegionMap
+                  map={r.map}
+                  dots={r.dots}
+                  className="group-hover:scale-[1.02] transition-transform duration-700 ease-out"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/40 to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-end p-5">
+
+                {/* Bottom gradient for text legibility */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-base-100 via-base-100/85 to-transparent" />
+
+                {/* Text content */}
+                <div className="pointer-events-none absolute inset-0 flex flex-col justify-end p-5">
                   <p className="text-[10px] uppercase tracking-widest text-primary mb-1">
                     {r.projectsCount > 0
                       ? `${r.projectsCount} proyecto${r.projectsCount > 1 ? "s" : ""}`

@@ -1,5 +1,14 @@
 import { NeosMark } from "../ui/NeosMark";
 import { TopoPattern } from "../ui/TopoPattern";
+import { HeroImageCarousel } from "../ui/HeroImageCarousel";
+import { projects } from "../../data/projects";
+
+const heroSlides = projects.map((p) => ({
+  src: p.heroImage,
+  alt: p.name,
+  label: p.name,
+  sublabel: p.location,
+}));
 
 export function Hero() {
   return (
@@ -62,28 +71,13 @@ export function Hero() {
           className="hero-in lg:col-span-5 relative hidden lg:block"
           style={{ animationDelay: "550ms" }}
         >
-          <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-base-300/60 bg-gradient-to-br from-primary/30 via-fuchsia-700/20 to-base-100">
-            <TopoPattern
-              className="absolute inset-0 w-full h-full text-primary"
-              opacity={0.4}
+          <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-base-300/60 bg-base-200 shadow-2xl">
+            <HeroImageCarousel
+              images={heroSlides}
+              interval={4500}
+              showLabels
+              showGradient
             />
-            <div className="absolute inset-0 flex flex-col justify-end p-8">
-              <p className="text-xs uppercase tracking-[0.3em] text-primary mb-2">
-                5 proyectos · 5 regiones
-              </p>
-              <p className="font-display text-2xl leading-tight">
-                Construyendo el norte argentino y la Patagonia energética.
-              </p>
-            </div>
-          </div>
-          <div
-            className="hero-in absolute -bottom-6 -left-6 bg-base-200 border border-base-300/60 rounded-2xl px-5 py-4 shadow-xl"
-            style={{ animationDelay: "900ms" }}
-          >
-            <p className="text-3xl font-display font-semibold text-primary leading-none">+500</p>
-            <p className="text-xs uppercase tracking-widest mt-1 opacity-70">
-              unidades entregadas
-            </p>
           </div>
         </div>
       </div>

@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 export interface CarouselImage {
   src: string;
   alt: string;
+  /** Optional label to show as a fading overlay (e.g. project name) */
+  label?: string;
+  /** Optional sublabel rendered above the label (e.g. location, in primary color) */
+  sublabel?: string;
 }
 
 interface HeroImageCarouselProps {
@@ -11,6 +15,10 @@ interface HeroImageCarouselProps {
   interval?: number;
   /** Show small dot indicators bottom-right. */
   showDots?: boolean;
+  /** Render per-slide label/sublabel overlay at bottom-left. */
+  showLabels?: boolean;
+  /** Render an internal darkening gradient for text legibility over the images. */
+  showGradient?: boolean;
 }
 
 /**
@@ -21,6 +29,8 @@ export function HeroImageCarousel({
   images,
   interval = 5000,
   showDots = true,
+  showLabels = false,
+  showGradient = false,
 }: HeroImageCarouselProps) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -52,6 +62,34 @@ export function HeroImageCarousel({
           }`}
         />
       ))}
+
+      {showGradient && (
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      )}
+
+      {showLabels && (
+        <div className="pointer-events-none absolute inset-0">
+          {images.map((img, i) => (
+            <div
+              key={i}
+              className={`absolute bottom-6 left-6 right-20 transition-opacity duration-700 ${
+                i === index ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {img.sublabel && (
+                <p className="text-xs uppercase tracking-[0.3em] text-primary mb-2">
+                  {img.sublabel}
+                </p>
+              )}
+              {img.label && (
+                <p className="font-display text-2xl text-white leading-tight">
+                  {img.label}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {showDots && images.length > 1 && (
         <div className="absolute bottom-4 right-4 flex gap-1.5 z-10">

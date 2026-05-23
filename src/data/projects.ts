@@ -45,34 +45,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    slug: "greet-balcarce",
-    name: "Greet Balcarce",
-    hashtag: "#stayinsalta",
-    tagline: "Un punto de bienvenida en la ciudad.",
-    description:
-      "Departamentos de 1, 2 y 3 dormitorios, diseñados para garantizar confort. Además de los pisos de residencias, el edificio cuenta con un SUM en terraza para el disfrute y la convivencia comunitaria.",
-    about:
-      "Greet es la nueva propuesta de NEOS, la desarrolladora del Grupo SaltaPor. Ubicado estratégicamente en una zona en potencial crecimiento dentro de la ciudad de Salta, se presenta como una gran oportunidad de inversión para quienes buscan una renta simple. Cada inversor de Greet tiene asegurado un ticket bajo de inversión y puede convertirse en verdadero anfitrión de su unidad, con garantía de retorno y bajos costos de mantenimiento.",
-    location: "Balcarce, Salta capital",
-    region: "Salta Capital",
-    status: "anteproyecto",
-    statusLabel: "Anteproyecto",
-    units: "39 unidades",
-    tipologias: "1, 2 y 3 dormitorios + 1 local comercial",
-    highlights: [
-      "39 unidades · 1 local",
-      "SUM en terraza",
-      "Zona en crecimiento",
-    ],
-    heroImage: "/projects/greet-balcarce/hero.webp",
-    logo: "/projects/greet-balcarce/logo.png",
-    progressUrl:
-      "https://www.youtube.com/playlist?list=PLMQAokpPK0kLDMaSxnXC5BPuYReZe6OPN",
-    mapsUrl:
-      "https://www.google.com/maps/place/24%C2%B046'16.9%22S+65%C2%B024'38.5%22W/@-24.771357,-65.410695,3947m/data=!3m1!1e3!4m4!3m3!8m2!3d-24.7713573!4d-65.4106948",
-    gradient: "from-pink-500/40 via-fuchsia-600/30 to-zinc-900",
-  },
-  {
     slug: "chaquies",
     name: "Chaquíes",
     hashtag: "#stayincafayate",
@@ -82,7 +54,7 @@ export const projects: Project[] = [
     location: "Cafayate, Salta",
     region: "Cafayate",
     status: "en-obra",
-    statusLabel: "En obra · +50%",
+    statusLabel: "En obra",
     units: "164 unidades",
     tipologias: "Monoambientes, 1 y 2 dormitorios",
     amenities: [
@@ -110,14 +82,41 @@ export const projects: Project[] = [
     gradient: "from-amber-600/40 via-rose-700/30 to-zinc-900",
   },
   {
+    slug: "greet-balcarce",
+    name: "Greet Balcarce",
+    hashtag: "#stayinsalta",
+    tagline: "Un punto de bienvenida en la ciudad.",
+    description:
+      "Departamentos de 1, 2 y 3 dormitorios, diseñados para garantizar confort. Además de los pisos de residencias, el edificio cuenta con un SUM en terraza para el disfrute y la convivencia comunitaria.",
+    about:
+      "Greet es la nueva propuesta de NEOS, la desarrolladora del Grupo SaltaPor. Ubicado estratégicamente en una zona en potencial crecimiento dentro de la ciudad de Salta, se presenta como una gran oportunidad de inversión para quienes buscan una renta simple. Cada inversor de Greet tiene asegurado un ticket bajo de inversión y puede convertirse en verdadero anfitrión de su unidad, con garantía de retorno y bajos costos de mantenimiento.",
+    location: "Balcarce, Salta capital",
+    region: "Salta Capital",
+    status: "en-obra",
+    statusLabel: "En obra",
+    units: "39 unidades",
+    tipologias: "1, 2 y 3 dormitorios + 1 local comercial",
+    highlights: [
+      "39 unidades · 1 local",
+      "SUM en terraza",
+      "Zona en crecimiento",
+    ],
+    heroImage: "/projects/greet-balcarce/hero.webp",
+    logo: "/projects/greet-balcarce/logo.png",
+    progressUrl:
+      "https://www.youtube.com/playlist?list=PLMQAokpPK0kLDMaSxnXC5BPuYReZe6OPN",
+    mapsUrl:
+      "https://www.google.com/maps/place/24%C2%B046'16.9%22S+65%C2%B024'38.5%22W/@-24.771357,-65.410695,3947m/data=!3m1!1e3!4m4!3m3!8m2!3d-24.7713573!4d-65.4106948",
+    gradient: "from-pink-500/40 via-fuchsia-600/30 to-zinc-900",
+  },
+  {
     slug: "mercatus",
     name: "Mercatus",
     hashtag: "#mercatus",
     tagline: "Un nuevo lugar para encontrarse en Cafayate.",
     description:
       "Mercatus no es solo un mercado, es un destino. El primer mercado comercial de Cafayate — un lugar pensado para descubrir, disfrutar y conectar con lo mejor de la región.",
-    about:
-      "Un paseo comercial, un nuevo encuentro, una gran experiencia.",
+    about: "Un paseo comercial, un nuevo encuentro, una gran experiencia.",
     location: "Cafayate, Salta",
     region: "Cafayate",
     status: "en-obra",
@@ -136,7 +135,8 @@ export const projects: Project[] = [
   {
     slug: "neweken",
     name: "Neweken",
-    tagline: "Invertí en renta inmobiliaria en Vaca Muerta con ingresos desde el primer mes.",
+    tagline:
+      "Invertí en renta inmobiliaria en Vaca Muerta con ingresos desde el primer mes.",
     description:
       "Vaca Muerta es una matriz productiva en expansión, con demanda habitacional estructural y sostenida en el tiempo. En ese contexto Neweken: un proyecto inmobiliario pensado para transformar ese crecimiento en renta inmobiliaria real.",
     about:

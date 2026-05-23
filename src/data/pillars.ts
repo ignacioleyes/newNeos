@@ -30,7 +30,7 @@ export const pillars: Pillar[] = [
     description: "Familias e inversores que ya confiaron.",
   },
   {
-    value: 5,
+    value: 3,
     label: "regiones activas",
     description: "Norte argentino y Patagonia energética.",
   },
