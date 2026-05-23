@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "neos";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #0a0a0a;
+  --color-base-200: #14141a;
+  --color-base-300: #1f1f26;
+  --color-base-content: #f5f5f5;
+
+  --color-primary: #e91e8c;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #f5f5f5;
+  --color-secondary-content: #0a0a0a;
+
+  --color-accent: #ff3a9e;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #1a1a1f;
+  --color-neutral-content: #f5f5f5;
+
+  --color-info: #38bdf8;
+  --color-info-content: #ffffff;
+  --color-success: #4ade80;
+  --color-success-content: #0a0a0a;
+  --color-warning: #facc15;
+  --color-warning-content: #0a0a0a;
+  --color-error: #f43f5e;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@theme {
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-sans: "Inter Tight", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter Tight", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Reveal-on-scroll utility */
+.reveal {
+  opacity: 0;
+  transform: translateY(48px) scale(0.97);
+  filter: blur(8px);
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Initial page-load entrance for the hero */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.hero-in {
+  animation: hero-in 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Subtle horizontal marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 35s linear infinite;
+}
+
+/* Ken Burns — subtle continuous zoom-pan for cinematic image carousels */
+@keyframes ken-burns {
+  0% {
+    transform: scale(1.05) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.15) translate(-1.5%, -1%);
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 14s ease-in-out infinite alternate;
+}
