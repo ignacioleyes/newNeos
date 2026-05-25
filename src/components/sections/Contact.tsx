@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useReveal } from "../../hooks/useReveal";
 import { TopoPattern } from "../ui/TopoPattern";
-import { useT } from "../../i18n/LanguageContext";
+import { useLang, useT } from "../../i18n/LanguageContext";
+import { submitLead } from "../../lib/leadService";
 
 interface FormState {
   nombre: string;
@@ -15,15 +16,34 @@ const initial: FormState = { nombre: "", email: "", telefono: "", mensaje: "" };
 export function Contact() {
   const ref = useReveal<HTMLDivElement>();
   const t = useT();
+  const { lang } = useLang();
   const [form, setForm] = useState<FormState>(initial);
+  const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Form submission (placeholder):", form);
-    setSent(true);
-    setForm(initial);
-    setTimeout(() => setSent(false), 6000);
+    if (sending) return;
+    setSending(true);
+    setError(null);
+    try {
+      await submitLead({
+        name: form.nombre.trim(),
+        email: form.email.trim() || null,
+        phone: form.telefono.trim() || null,
+        message: form.mensaje.trim() || null,
+        source: "contact-form",
+        lang,
+      });
+      setSent(true);
+      setForm(initial);
+      window.setTimeout(() => setSent(false), 6000);
+    } catch {
+      setError(t.contact.error);
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -139,10 +159,20 @@ export function Contact() {
           </label>
           <button
             type="submit"
-            className="btn btn-primary w-full rounded-full text-base h-12"
+            disabled={sending}
+            className="btn btn-primary w-full rounded-full text-base h-12 disabled:opacity-60"
           >
-            {sent ? t.contact.submitted : t.contact.submit}
+            {sending
+              ? t.contact.submitting
+              : sent
+                ? t.contact.submitted
+                : t.contact.submit}
           </button>
+          {error && (
+            <p className="text-xs text-error text-center" role="alert">
+              {error}
+            </p>
+          )}
           <p className="text-xs opacity-60 text-center">{t.contact.disclaimer}</p>
         </form>
       </div>

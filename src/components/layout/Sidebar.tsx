@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { projects } from "../../data/projects";
 import { NeosMark } from "../ui/NeosMark";
+import { WhatsAppIcon } from "../ui/WhatsAppIcon";
 import { useT } from "../../i18n/LanguageContext";
 
 interface SidebarProps {
@@ -176,6 +177,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <div className="px-6 sm:px-8 lg:px-12 py-5 sm:py-8 border-t border-base-300/40 space-y-4 sm:space-y-5">
           <div className="flex items-center justify-between gap-4">
             <div className="flex gap-2 sm:gap-3">
+              <a
+                href="https://wa.me/5493872233240"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="WhatsApp"
+                className="h-9 w-9 sm:h-10 sm:w-10 inline-flex items-center justify-center rounded-full border border-base-300/60 hover:border-[#25D366] hover:text-[#25D366] transition-colors"
+              >
+                <WhatsAppIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+              </a>
               {socials.map((s) => (
                 <a
                   key={s.label}

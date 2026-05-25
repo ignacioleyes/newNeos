@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Topbar } from "./components/layout/Topbar";
 import { Footer } from "./components/layout/Footer";
-import { WhatsAppFab } from "./components/layout/WhatsAppFab";
 import { ScrollManager } from "./components/layout/ScrollManager";
+import { NeoLauncher } from "./components/chatbot/NeoLauncher";
 import { Home } from "./pages/Home";
 import { ProjectDetail } from "./pages/ProjectDetail";
 import { LanguageProvider } from "./i18n/LanguageContext";
@@ -21,7 +21,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
-          <WhatsAppFab phone="+5493872233240" />
+          <NeoLauncher />
         </div>
       </BrowserRouter>
     </LanguageProvider>

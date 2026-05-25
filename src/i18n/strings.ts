@@ -103,7 +103,9 @@ export const messages = {
       fMessage: "Mensaje",
       fMessageOptional: "(opcional)",
       submit: "Enviar consulta →",
+      submitting: "Enviando…",
       submitted: "¡Recibido! Te escribimos pronto ✓",
+      error: "Algo falló al enviar. Probá de nuevo en un momento.",
       disclaimer: "Al enviar aceptás ser contactado por un asesor de NEOS.",
     },
     footer: {
@@ -229,6 +231,117 @@ export const messages = {
           "Accedé a Vaca Muerta con un ticket bajo y una estructura pensada para inversores que buscan rentabilidad, previsibilidad y gestión profesional.",
       },
     },
+    neo: {
+      fab: {
+        label: "Hablá con Neo",
+        proactiveTooltip: "Hola, soy Neo. ¿Te ayudo?",
+      },
+      header: {
+        title: "Neo",
+        subtitle: "Asistente NEOS",
+        closeLabel: "Cerrar conversación",
+      },
+      steps: {
+        discover_intent: {
+          text: "¡Hola! Soy Neo, el asistente de NEOS. Te ayudo a explorar nuestros proyectos. ¿Qué te interesa hacer?",
+          choices: {
+            inversion: "Quiero invertir",
+            vivienda: "Buscar vivienda",
+            info: "Solo info",
+          },
+        },
+        discover_region: {
+          text: "Genial. ¿Tenés alguna zona en mente?",
+          choices: {
+            "cafayate": "Cafayate",
+            "vaca-muerta": "Vaca Muerta",
+            "salta-capital": "Salta Capital",
+            "otro": "Aún no sé",
+          },
+        },
+        show_projects: {
+          text: (region: string) =>
+            `Estos son los proyectos que tenemos en ${region}. Mirá los que te interesen y seguimos.`,
+          textNoRegion:
+            "Te muestro algunos de nuestros proyectos. Mirá los que te interesen y seguimos.",
+          continue: "Continuar",
+          viewProject: "Ver proyecto →",
+        },
+        capture_name: {
+          text: "Para que un asesor te mande info personalizada, ¿cómo te llamás?",
+          placeholder: "Tu nombre",
+          submit: "Continuar",
+          errorMin: "Ingresá tu nombre completo",
+        },
+        capture_contact_channel: {
+          text: (name: string) =>
+            `Listo, ${name}. ¿Por dónde preferís que te contactemos?`,
+          choices: {
+            email: "Por email",
+            phone: "Por WhatsApp",
+          },
+        },
+        capture_contact_value: {
+          textEmail: "Genial. ¿Cuál es tu email?",
+          textPhone: "Genial. ¿Cuál es tu número de WhatsApp?",
+          placeholderEmail: "tu@email.com",
+          placeholderPhone: "+54 9 387 123 4567",
+          submit: "Continuar",
+          errorEmail: "Ese email no parece válido",
+          errorPhone: "Ese número no parece válido",
+        },
+        confirm: {
+          text: (name: string) =>
+            `Perfecto, ${name}. ¿Confirmamos estos datos para que un asesor te contacte?`,
+          labelName: "Nombre",
+          labelEmail: "Email",
+          labelPhone: "WhatsApp",
+          labelInterest: "Interés",
+          labelRegion: "Zona",
+          labelProject: "Proyecto",
+          confirm: "Confirmar y enviar",
+          edit: "Editar datos",
+        },
+        post_send: {
+          text: (name: string) =>
+            `¡Listo, ${name}! Un asesor de NEOS te va a contactar a la brevedad. ¿Querés además escribirnos por WhatsApp ahora?`,
+          whatsapp: "Abrir WhatsApp",
+          noThanks: "Después, gracias",
+          whatsappPrefill: (
+            name: string,
+            interest: string | null,
+            region: string | null,
+          ) => {
+            const parts = [`Hola, soy ${name}. Hablé con Neo en la web`];
+            if (interest) parts.push(`y me interesa ${interest.toLowerCase()}`);
+            if (region) parts.push(`en ${region}`);
+            return parts.join(" ") + ".";
+          },
+        },
+        closed: {
+          text: "¡Gracias por hablar con Neo! Cuando quieras, abrí el chat de nuevo.",
+          restart: "Empezar de nuevo",
+        },
+      },
+      display: {
+        interest: {
+          inversion: "Inversión",
+          vivienda: "Vivienda",
+          info: "Solo info",
+        },
+        region: {
+          "cafayate": "Cafayate",
+          "vaca-muerta": "Vaca Muerta",
+          "salta-capital": "Salta Capital",
+          "otro": "Aún no sé",
+        },
+      },
+      send: {
+        sending: "Enviando…",
+        error: "Algo falló al enviar. Probá de nuevo.",
+        retry: "Reintentar",
+      },
+    },
   },
   en: {
     common: {
@@ -328,7 +441,9 @@ export const messages = {
       fMessage: "Message",
       fMessageOptional: "(optional)",
       submit: "Send inquiry →",
+      submitting: "Sending…",
       submitted: "Received! We'll be in touch soon ✓",
+      error: "Something went wrong. Please try again in a moment.",
       disclaimer: "By submitting you accept to be contacted by a NEOS advisor.",
     },
     footer: {
@@ -450,6 +565,117 @@ export const messages = {
         investFromLabel: "From",
         investBody:
           "Access Vaca Muerta with a low ticket and a structure designed for investors looking for returns, predictability and professional management.",
+      },
+    },
+    neo: {
+      fab: {
+        label: "Chat with Neo",
+        proactiveTooltip: "Hi, I'm Neo. Can I help?",
+      },
+      header: {
+        title: "Neo",
+        subtitle: "NEOS assistant",
+        closeLabel: "Close chat",
+      },
+      steps: {
+        discover_intent: {
+          text: "Hi! I'm Neo, NEOS' assistant. I'll help you explore our projects. What would you like to do?",
+          choices: {
+            inversion: "I want to invest",
+            vivienda: "Find a home",
+            info: "Just browsing",
+          },
+        },
+        discover_region: {
+          text: "Great. Any region in mind?",
+          choices: {
+            "cafayate": "Cafayate",
+            "vaca-muerta": "Vaca Muerta",
+            "salta-capital": "Salta Capital",
+            "otro": "Not sure yet",
+          },
+        },
+        show_projects: {
+          text: (region: string) =>
+            `Here are our projects in ${region}. Take a look at any you like and we'll continue.`,
+          textNoRegion:
+            "Here are some of our projects. Take a look at any you like and we'll continue.",
+          continue: "Continue",
+          viewProject: "View project →",
+        },
+        capture_name: {
+          text: "So an advisor can send you personalized info — what's your name?",
+          placeholder: "Your name",
+          submit: "Continue",
+          errorMin: "Please enter your full name",
+        },
+        capture_contact_channel: {
+          text: (name: string) =>
+            `Got it, ${name}. How would you prefer to be contacted?`,
+          choices: {
+            email: "By email",
+            phone: "By WhatsApp",
+          },
+        },
+        capture_contact_value: {
+          textEmail: "Great. What's your email?",
+          textPhone: "Great. What's your WhatsApp number?",
+          placeholderEmail: "you@email.com",
+          placeholderPhone: "+54 9 387 123 4567",
+          submit: "Continue",
+          errorEmail: "That email doesn't look valid",
+          errorPhone: "That number doesn't look valid",
+        },
+        confirm: {
+          text: (name: string) =>
+            `Perfect, ${name}. Shall we confirm these details so an advisor can reach out?`,
+          labelName: "Name",
+          labelEmail: "Email",
+          labelPhone: "WhatsApp",
+          labelInterest: "Interest",
+          labelRegion: "Region",
+          labelProject: "Project",
+          confirm: "Confirm & send",
+          edit: "Edit details",
+        },
+        post_send: {
+          text: (name: string) =>
+            `All set, ${name}! A NEOS advisor will reach out shortly. Would you also like to message us on WhatsApp now?`,
+          whatsapp: "Open WhatsApp",
+          noThanks: "Later, thanks",
+          whatsappPrefill: (
+            name: string,
+            interest: string | null,
+            region: string | null,
+          ) => {
+            const parts = [`Hi, I'm ${name}. I talked to Neo on your website`];
+            if (interest) parts.push(`and I'm interested in ${interest.toLowerCase()}`);
+            if (region) parts.push(`in ${region}`);
+            return parts.join(" ") + ".";
+          },
+        },
+        closed: {
+          text: "Thanks for chatting with Neo! Open the chat again whenever you want.",
+          restart: "Start over",
+        },
+      },
+      display: {
+        interest: {
+          inversion: "Investing",
+          vivienda: "Housing",
+          info: "Just browsing",
+        },
+        region: {
+          "cafayate": "Cafayate",
+          "vaca-muerta": "Vaca Muerta",
+          "salta-capital": "Salta Capital",
+          "otro": "Not sure yet",
+        },
+      },
+      send: {
+        sending: "Sending…",
+        error: "Something went wrong. Please try again.",
+        retry: "Retry",
       },
     },
   },
