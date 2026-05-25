@@ -1,9 +1,17 @@
 import { useReveal } from "../../hooks/useReveal";
 import { NeosMark } from "../ui/NeosMark";
 import { TopoPattern } from "../ui/TopoPattern";
+import { useT } from "../../i18n/LanguageContext";
 
 export function About() {
   const ref = useReveal<HTMLDivElement>();
+  const t = useT();
+
+  const pills = [
+    { k: t.about.pill1Label, v: t.about.pill1Value },
+    { k: t.about.pill2Label, v: t.about.pill2Value },
+    { k: t.about.pill3Label, v: t.about.pill3Value },
+  ];
 
   return (
     <section
@@ -21,31 +29,18 @@ export function About() {
       >
         <div className="lg:col-span-7">
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-            Quiénes somos
+            {t.about.eyebrow}
           </p>
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-            Una desarrolladora que <em className="not-italic text-primary">construye futuro</em> en cada región.
+            {t.about.titleA} <em className="not-italic text-primary">{t.about.titleHighlight}</em> {t.about.titleB}
           </h2>
           <div className="mt-8 space-y-5 text-base sm:text-lg opacity-80 leading-relaxed max-w-2xl">
-            <p>
-              NEOS es la desarrolladora del Grupo SaltaPor. Diseñamos productos
-              inmobiliarios pensando en ubicación, escala humana, diseño y
-              rentabilidad — para que vivir, descansar e invertir sean parte de
-              la misma decisión.
-            </p>
-            <p>
-              Operamos desde Salta capital hasta Vaca Muerta, leyendo cada
-              territorio para transformar potencial regional en oportunidades
-              que se concretan.
-            </p>
+            <p>{t.about.body1}</p>
+            <p>{t.about.body2}</p>
           </div>
 
           <div className="mt-10 grid sm:grid-cols-3 gap-6 max-w-xl">
-            {[
-              { k: "Diseño", v: "Arquitectura contemporánea" },
-              { k: "Respaldo", v: "Grupo SaltaPor" },
-              { k: "Foco", v: "Inversión + lifestyle" },
-            ].map((item) => (
+            {pills.map((item) => (
               <div key={item.k} className="border-t border-primary/60 pt-3">
                 <p className="text-xs uppercase tracking-widest text-primary">
                   {item.k}
@@ -57,9 +52,8 @@ export function About() {
         </div>
 
         <div className="lg:col-span-5 relative flex justify-center">
-          <div className="relative w-72 h-72 lg:w-96 lg:h-96">
-            <NeosMark className="absolute inset-0 w-full h-full text-primary/80" />
-            <NeosMark className="absolute inset-0 w-full h-full text-primary/20 rotate-45 scale-110" />
+          <div className="relative w-64 h-64 lg:w-80 lg:h-80 opacity-60">
+            <NeosMark className="absolute inset-0 w-full h-full" />
           </div>
         </div>
       </div>

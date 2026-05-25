@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { NeosLogo } from "../ui/NeosLogo";
 import { Sidebar } from "./Sidebar";
+import { LanguageSwitcher } from "../ui/LanguageSwitcher";
+import { useT } from "../../i18n/LanguageContext";
 
 export function Topbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -32,25 +35,28 @@ export function Topbar() {
             <NeosLogo withMark />
           </Link>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Abrir menú"
-            aria-expanded={menuOpen}
-            className="group flex items-center gap-3 text-sm font-medium tracking-wide hover:text-primary transition-colors"
-          >
-            <span className="hidden sm:inline opacity-80 group-hover:opacity-100 uppercase text-xs tracking-[0.25em]">
-              Menú
-            </span>
-            <span
-              className="relative inline-block w-7 h-5"
-              aria-hidden="true"
+          <div className="flex items-center gap-4 sm:gap-6">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label={t.common.open}
+              aria-expanded={menuOpen}
+              className="group flex items-center gap-3 text-sm font-medium tracking-wide hover:text-primary transition-colors"
             >
-              <span className="absolute top-0 left-0 w-full h-px bg-current transition-transform" />
-              <span className="absolute top-1/2 -translate-y-1/2 right-0 w-4 h-px bg-current group-hover:w-full transition-all duration-300" />
-              <span className="absolute bottom-0 left-0 w-full h-px bg-current transition-transform" />
-            </span>
-          </button>
+              <span className="hidden sm:inline opacity-80 group-hover:opacity-100 uppercase text-xs tracking-[0.25em]">
+                {t.common.menu}
+              </span>
+              <span
+                className="relative inline-block w-7 h-5"
+                aria-hidden="true"
+              >
+                <span className="absolute top-0 left-0 w-full h-px bg-current transition-transform" />
+                <span className="absolute top-1/2 -translate-y-1/2 right-0 w-4 h-px bg-current group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-full h-px bg-current transition-transform" />
+              </span>
+            </button>
+          </div>
         </div>
       </header>
 

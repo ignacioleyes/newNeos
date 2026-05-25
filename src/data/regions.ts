@@ -1,31 +1,26 @@
+import type { Localized } from "../i18n/types";
+
 export type DotStatus = "in-progress" | "finalized";
 
 export interface MapDot {
-  /** Latitud real en grados decimales (negativa para hemisferio sur) */
   lat: number;
-  /** Longitud real en grados decimales (negativa para oeste) */
   lng: number;
   label: string;
   status: DotStatus;
 }
 
 export interface RegionMapData {
-  /** Path al PNG dentro de /public (servido en root). null hasta que se exporte. */
   image: string | null;
-  /** Bounding box exacto del mapa para proyectar lat/lng a fracciones. */
   bbox: { north: number; south: number; east: number; west: number };
 }
 
 export interface Region {
   slug: string;
   name: string;
-  description: string;
+  description: Localized<string>;
   projectsCount: number;
-  /** Coords del centroide de la región para el fallback. */
   coords: { lat: number; lng: number };
-  /** Mapa estilizado de la región. */
   map: RegionMapData;
-  /** Dots a mostrar sobre el mapa. */
   dots: MapDot[];
   gradient: string;
 }
@@ -34,7 +29,10 @@ export const regions: Region[] = [
   {
     slug: "salta-capital",
     name: "Salta Capital",
-    description: "Residencial premium y barrios privados en el Valle de Lerma.",
+    description: {
+      es: "Residencial premium y barrios privados en el Valle de Lerma.",
+      en: "Premium residential and gated communities in the Lerma Valley.",
+    },
     projectsCount: 2,
     coords: { lat: -24.78, lng: -65.41 },
     map: {
@@ -54,14 +52,16 @@ export const regions: Region[] = [
         label: "El Cauce Castellanos",
         status: "in-progress",
       },
-      // TODO: agregar 2 proyectos entregados con coords reales
     ],
     gradient: "from-rose-600/30 to-zinc-900",
   },
   {
     slug: "cafayate",
     name: "Cafayate",
-    description: "Lifestyle, turismo y vino entre montañas.",
+    description: {
+      es: "Lifestyle, turismo y vino entre montañas.",
+      en: "Lifestyle, tourism and wine between mountains.",
+    },
     projectsCount: 2,
     coords: { lat: -26.07, lng: -65.97 },
     map: {
@@ -87,7 +87,10 @@ export const regions: Region[] = [
   {
     slug: "vaca-muerta",
     name: "Vaca Muerta",
-    description: "Vivienda al servicio del polo energético.",
+    description: {
+      es: "Vivienda al servicio del polo energético.",
+      en: "Housing serving the energy hub.",
+    },
     projectsCount: 1,
     coords: { lat: -38.36, lng: -68.78 },
     map: {

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { NeosLogo } from "../ui/NeosLogo";
 import { TopoPattern } from "../ui/TopoPattern";
 import { projects } from "../../data/projects";
+import { useT } from "../../i18n/LanguageContext";
 
 const socials = [
   { label: "Instagram", href: "https://www.instagram.com/neos.ok" },
@@ -10,6 +11,8 @@ const socials = [
 ];
 
 export function Footer() {
+  const t = useT();
+
   return (
     <footer className="relative bg-base-100 text-base-content/80 border-t border-base-300/60 overflow-hidden">
       <TopoPattern
@@ -21,7 +24,7 @@ export function Footer() {
         <div>
           <NeosLogo withMark className="text-base-content" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed opacity-70">
-            Desarrolladora del Grupo SaltaPor. Oportunidades que se concretan.
+            {t.footer.blurb}
           </p>
           <ul className="mt-6 flex gap-3">
             {socials.map((s) => (
@@ -42,7 +45,7 @@ export function Footer() {
 
         <div>
           <h3 className="text-primary font-semibold text-sm uppercase tracking-widest mb-4">
-            Contacto
+            {t.footer.contactHeading}
           </h3>
           <ul className="space-y-2 text-sm">
             <li>
@@ -55,14 +58,14 @@ export function Footer() {
                 info@neos.ar
               </a>
             </li>
-            <li className="opacity-80">Leguizamón 1946 · Salta · Argentina</li>
+            <li className="opacity-80">{t.common.address}</li>
             <li className="opacity-80">0387 146 328 278</li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-primary font-semibold text-sm uppercase tracking-widest mb-4">
-            Proyectos
+            {t.footer.projectsHeading}
           </h3>
           <ul className="space-y-2 text-sm">
             {projects.map((p) => (
@@ -81,8 +84,8 @@ export function Footer() {
 
       <div className="relative border-t border-base-300/60">
         <div className="container mx-auto px-6 lg:px-10 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs opacity-60">
-          <p>© {new Date().getFullYear()} NEOS · Grupo SaltaPor. Todos los derechos reservados.</p>
-          <p>Hecho con cariño desde el norte argentino.</p>
+          <p>{t.footer.copyright(new Date().getFullYear())}</p>
+          <p>{t.footer.tagline}</p>
         </div>
       </div>
     </footer>

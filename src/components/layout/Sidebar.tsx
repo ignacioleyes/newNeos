@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { projects } from "../../data/projects";
 import { NeosMark } from "../ui/NeosMark";
+import { useT } from "../../i18n/LanguageContext";
 
 interface SidebarProps {
   open: boolean;
@@ -15,9 +16,9 @@ const socials = [
 ];
 
 export function Sidebar({ open, onClose }: SidebarProps) {
+  const t = useT();
   const [projectsExpanded, setProjectsExpanded] = useState(false);
 
-  // Body scroll lock while open
   useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
@@ -27,7 +28,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     };
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -37,13 +37,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  // Reset accordion when menu closes
   useEffect(() => {
     if (!open) setProjectsExpanded(false);
   }, [open]);
 
   const itemBase =
-    "group relative block py-3 font-display text-4xl lg:text-5xl font-semibold tracking-tight hover:text-primary transition-colors";
+    "group relative block py-2 sm:py-3 font-display text-2xl sm:text-3xl lg:text-5xl font-semibold tracking-tight hover:text-primary transition-colors";
 
   return (
     <div
@@ -52,27 +51,24 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       }`}
       aria-hidden={!open}
     >
-      {/* Backdrop — click to close */}
       <div
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      {/* Sidebar panel */}
       <aside
         className={`absolute top-0 right-0 h-full w-full sm:w-[480px] lg:w-[60vw] xl:w-[640px] bg-base-100/95 backdrop-blur-xl border-l border-base-300/60 shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Top bar of the panel */}
-        <div className="px-8 lg:px-12 h-16 flex items-center justify-end border-b border-base-300/40">
+        <div className="px-6 sm:px-8 lg:px-12 h-14 sm:h-16 flex items-center justify-end border-b border-base-300/40">
           <button
             type="button"
             onClick={onClose}
-            aria-label="Cerrar menú"
+            aria-label={t.common.close}
             className="group flex items-center gap-3 text-xs uppercase tracking-[0.3em] opacity-80 hover:text-primary hover:opacity-100 transition-colors"
           >
-            <span>Cerrar</span>
+            <span>{t.common.close}</span>
             <span className="relative w-5 h-5">
               <span className="absolute top-1/2 left-0 w-full h-px bg-current rotate-45 group-hover:rotate-[135deg] transition-transform" />
               <span className="absolute top-1/2 left-0 w-full h-px bg-current -rotate-45 group-hover:rotate-[45deg] transition-transform" />
@@ -80,10 +76,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </button>
         </div>
 
-        {/* Menu */}
-        <nav className="flex-1 overflow-y-auto px-8 lg:px-12 py-10">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-6">
-            Navegación
+        <nav className="flex-1 overflow-y-auto px-6 sm:px-8 lg:px-12 py-6 sm:py-10">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-4 sm:mb-6">
+            {t.nav.navigation}
           </p>
 
           <ul className="space-y-1">
@@ -91,7 +86,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               <Link to="/" onClick={onClose} className={itemBase}>
                 <span className="inline-flex items-center gap-4">
                   <span className="block w-6 h-px bg-primary opacity-0 group-hover:opacity-100 group-hover:w-10 transition-all duration-300" />
-                  Inicio
+                  {t.nav.home}
                 </span>
               </Link>
             </li>
@@ -111,7 +106,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                         : "w-6 opacity-0 group-hover:opacity-100 group-hover:w-10"
                     }`}
                   />
-                  Proyectos
+                  {t.nav.projects}
                 </span>
                 <span
                   className={`text-2xl font-light leading-none transition-transform duration-300 ${
@@ -145,7 +140,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                       <Link
                         to={`/proyectos/${p.slug}`}
                         onClick={onClose}
-                        className="group/sub flex items-baseline gap-3 py-2 text-lg lg:text-xl opacity-75 hover:opacity-100 hover:text-primary transition-colors"
+                        className="group/sub flex items-baseline gap-3 py-2 text-base sm:text-lg lg:text-xl opacity-75 hover:opacity-100 hover:text-primary transition-colors"
                       >
                         <span className="text-[10px] uppercase tracking-widest opacity-50 w-6">
                           0{idx + 1}
@@ -162,7 +157,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               <Link to="/#nosotros" onClick={onClose} className={itemBase}>
                 <span className="inline-flex items-center gap-4">
                   <span className="block w-6 h-px bg-primary opacity-0 group-hover:opacity-100 group-hover:w-10 transition-all duration-300" />
-                  Nosotros
+                  {t.nav.about}
                 </span>
               </Link>
             </li>
@@ -171,20 +166,16 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               <Link to="/#contacto" onClick={onClose} className={itemBase}>
                 <span className="inline-flex items-center gap-4">
                   <span className="block w-6 h-px bg-primary opacity-0 group-hover:opacity-100 group-hover:w-10 transition-all duration-300" />
-                  Contacto
+                  {t.nav.contact}
                 </span>
               </Link>
             </li>
           </ul>
         </nav>
 
-        {/* Panel footer */}
-        <div className="px-8 lg:px-12 py-8 border-t border-base-300/40 space-y-5">
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary mb-3">
-              Conectá
-            </p>
-            <div className="flex gap-3">
+        <div className="px-6 sm:px-8 lg:px-12 py-5 sm:py-8 border-t border-base-300/40 space-y-4 sm:space-y-5">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex gap-2 sm:gap-3">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -192,15 +183,16 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={s.title}
-                  className="h-10 w-10 inline-flex items-center justify-center rounded-full border border-base-300/60 hover:border-primary hover:text-primary text-xs font-medium transition-colors"
+                  className="h-9 w-9 sm:h-10 sm:w-10 inline-flex items-center justify-center rounded-full border border-base-300/60 hover:border-primary hover:text-primary text-xs font-medium transition-colors"
                 >
                   {s.label}
                 </a>
               ))}
             </div>
+            <NeosMark className="h-8 w-8 sm:h-10 sm:w-10 opacity-20" />
           </div>
 
-          <div className="text-sm space-y-1">
+          <div className="text-xs sm:text-sm space-y-0.5 sm:space-y-1">
             <a
               href="mailto:info@neos.ar"
               className="block opacity-80 hover:text-primary hover:opacity-100 transition"
@@ -213,13 +205,9 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             >
               +54 9 387 223 3240
             </a>
-            <p className="opacity-60 text-xs">
-              Leguizamón 1946 · Salta · Argentina
+            <p className="opacity-60 text-[11px] sm:text-xs">
+              {t.common.address}
             </p>
-          </div>
-
-          <div className="flex justify-end opacity-20 pt-2">
-            <NeosMark className="h-10 w-10 text-primary" />
           </div>
         </div>
       </aside>

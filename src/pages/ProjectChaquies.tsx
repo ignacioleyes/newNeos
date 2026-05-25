@@ -5,65 +5,50 @@ import { Reveal } from "../components/ui/Reveal";
 import { TopoPattern } from "../components/ui/TopoPattern";
 import { CountUp } from "../components/ui/CountUp";
 import { HeroImageCarousel } from "../components/ui/HeroImageCarousel";
+import { AmenityIcon } from "../components/ui/AmenityIcon";
 import { useT, useTr } from "../i18n/LanguageContext";
 
-const project = projects.find((p) => p.slug === "neweken")!;
+const project = projects.find((p) => p.slug === "chaquies")!;
 
 const heroImages = [
-  { src: "/projects/neweken/hero.png", alt: "Neweken entrance" },
-  { src: "/projects/neweken/aerial-2.jpg", alt: "Panoramic view" },
-  { src: "/projects/neweken/aerial-1.jpg", alt: "Aerial view" },
-  { src: "/projects/neweken/construction.jpg", alt: "Construction progress" },
+  { src: "/projects/chaquies/newHero.jpg", alt: "Chaquíes — vineyards & mountains" },
+  { src: "/projects/chaquies/sum-exterior.jpg", alt: "SUM exterior" },
+  { src: "/projects/chaquies/kids-zone.jpg", alt: "Kids zone" },
+  { src: "/projects/chaquies/piscina-cubierta.jpg", alt: "Indoor heated pool" },
 ];
 
-function IconBlueprint() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-6 w-6">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M3 9h18M9 3v18M9 13h6v4H9z" />
-    </svg>
-  );
-}
-
-function IconDocument() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-6 w-6">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-      <line x1="8" y1="13" x2="16" y2="13" />
-      <line x1="8" y1="17" x2="16" y2="17" />
-    </svg>
-  );
-}
-
-function IconPlay() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="h-6 w-6">
-      <circle cx="12" cy="12" r="10" />
-      <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" />
-    </svg>
-  );
-}
-
-export function ProjectNeweken() {
+export function ProjectChaquies() {
   const t = useT();
   const tr = useTr();
-  const n = t.project.neweken;
-
-  const stages = [
-    { name: "Etapa 1", status: n.stageFinished, active: false },
-    { name: "Etapa 2", status: n.stageFinished, active: false },
-    { name: "Etapa 3", status: n.stageFinished, active: false },
-    { name: "Etapa 4", status: n.stageFinished, active: false },
-    { name: "Etapa 5", status: n.stageInProgress, active: true },
-    { name: "Etapa 6", status: n.stageInProgress, active: true },
-  ];
+  const c = t.project.chaquies;
 
   const gallery = [
-    { src: "/projects/neweken/aerial-2.jpg", label: { es: "Vista panorámica del complejo", en: "Panoramic view of the complex" }, colSpan: false },
-    { src: "/projects/neweken/construction.jpg", label: { es: "Avance constructivo", en: "Construction progress" }, colSpan: false },
-    { src: "/projects/neweken/aerial-1.jpg", label: { es: "Vista cenital del master plan", en: "Top view of the master plan" }, colSpan: true },
+    {
+      src: "/projects/chaquies/fachada.jpg",
+      label: { es: "Fachada · vista frontal", en: "Facade · front view" },
+      colSpan: true,
+    },
+    {
+      src: "/projects/chaquies/sum-interior.jpg",
+      label: { es: "SUM · interior", en: "SUM · interior" },
+      colSpan: false,
+    },
+    {
+      src: "/projects/chaquies/piscina-cubierta.jpg",
+      label: {
+        es: "Piscina interior climatizada",
+        en: "Indoor heated pool",
+      },
+      colSpan: false,
+    },
+    {
+      src: "/projects/chaquies/obra-avance.jpg",
+      label: { es: "Avance de obra", en: "Construction progress" },
+      colSpan: true,
+    },
   ];
+
+  const amenities = project.amenities ?? [];
 
   return (
     <>
@@ -93,7 +78,7 @@ export function ProjectNeweken() {
                 {tr(project.statusLabel)}
               </span>
               <span className="text-xs uppercase tracking-widest text-primary">
-                {tr(project.location)}
+                {project.hashtag}
               </span>
             </div>
             {project.logo && (
@@ -110,15 +95,21 @@ export function ProjectNeweken() {
             >
               {tr(project.tagline)}
             </h1>
+            <p
+              className="hero-in mt-8 max-w-xl text-base sm:text-lg opacity-80 leading-relaxed"
+              style={{ animationDelay: "650ms" }}
+            >
+              {tr(project.description)}
+            </p>
             <div
               className="hero-in mt-10 flex flex-wrap gap-3"
-              style={{ animationDelay: "700ms" }}
+              style={{ animationDelay: "800ms" }}
             >
               <a
-                href="#avance-de-obra"
+                href="#amenities"
                 className="btn btn-primary rounded-full px-6 group"
               >
-                {t.project.seeProgress}
+                {t.project.seeAmenities}
                 <span className="ml-1 transition-transform group-hover:translate-x-0.5">→</span>
               </a>
               <a
@@ -157,7 +148,7 @@ export function ProjectNeweken() {
             { label: t.project.location, value: tr(project.location) },
             { label: t.project.units, value: project.units ? tr(project.units) : "" },
             { label: t.project.tipology, value: project.tipologias ? tr(project.tipologias) : "" },
-            { label: t.project.investFrom, value: "USD 45.900", primary: true },
+            { label: t.project.distanceToSquare, value: "300 m", primary: true },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-[10px] uppercase tracking-widest text-primary mb-1">
@@ -175,27 +166,27 @@ export function ProjectNeweken() {
         </div>
       </section>
 
-      {/* ¿QUÉ ES NEWEKEN? */}
+      {/* ¿QUÉ ES CHAQUÍES? */}
       <section className="bg-base-100">
         <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32 grid lg:grid-cols-12 gap-12 items-center">
           <Reveal className="lg:col-span-7">
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              {n.whatEyebrow}
+              {t.project.whatIs(project.name)}
             </p>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight mb-8">
-              {n.whatTitleA}{" "}
-              <em className="not-italic text-primary">{n.whatHighlight}</em>{" "}
-              {n.whatTitleB}
+              {c.whatTitleA}{" "}
+              <em className="not-italic text-primary">{c.whatHighlight}</em>{" "}
+              {c.whatTitleB}
             </h2>
             <div className="space-y-5 text-base sm:text-lg opacity-80 leading-relaxed">
-              <p>{tr(project.description)}</p>
-              {project.about && <p>{tr(project.about)}</p>}
+              <p>{c.whatBody1}</p>
+              <p>{c.whatBody2}</p>
             </div>
             <div className="mt-10 grid sm:grid-cols-3 gap-4">
               {[
-                { v: n.metric1Value, l: n.metric1Label },
-                { v: n.metric2Value, l: n.metric2Label },
-                { v: n.metric3Value, l: n.metric3Label },
+                { v: "164", l: c.metricUnits },
+                { v: "+20.000", l: c.metricM2 },
+                { v: "13", l: c.metricAmenities },
               ].map((m) => (
                 <div key={m.l} className="border-t border-primary/60 pt-3">
                   <p className="font-display text-2xl font-semibold text-primary">
@@ -211,7 +202,7 @@ export function ProjectNeweken() {
           <Reveal delay={200} className="lg:col-span-5">
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-base-300/60">
               <img
-                src="/projects/neweken/aerial-1.jpg"
+                src="/projects/chaquies/sum-exterior.jpg"
                 alt={project.name}
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
@@ -222,7 +213,7 @@ export function ProjectNeweken() {
         </div>
       </section>
 
-      {/* CONTEXTO VACA MUERTA */}
+      {/* CONTEXTO CAFAYATE */}
       <section className="bg-base-200 border-y border-base-300/60 relative overflow-hidden">
         <TopoPattern
           className="absolute -right-40 top-0 w-[800px] text-primary"
@@ -231,23 +222,23 @@ export function ProjectNeweken() {
         <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32 relative">
           <Reveal className="max-w-3xl mb-16">
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              {n.contextEyebrow}
+              {c.contextEyebrow}
             </p>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
-              {n.contextTitleA}{" "}
-              <em className="not-italic text-primary">{n.contextHighlight}</em>
-              {n.contextTitleB}
+              {c.contextTitleA}{" "}
+              <em className="not-italic text-primary">{c.contextHighlight}</em>
+              {c.contextTitleB}
             </h2>
             <p className="mt-6 opacity-75 leading-relaxed text-lg">
-              {n.contextSubtitle}
+              {c.contextSubtitle}
             </p>
           </Reveal>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { eyebrow: n.reason1Eyebrow, title: n.reason1Title, body: n.reason1Body },
-              { eyebrow: n.reason2Eyebrow, title: n.reason2Title, body: n.reason2Body },
-              { eyebrow: n.reason3Eyebrow, title: n.reason3Title, body: n.reason3Body },
+              { eyebrow: c.reason1Eyebrow, title: c.reason1Title, body: c.reason1Body },
+              { eyebrow: c.reason2Eyebrow, title: c.reason2Title, body: c.reason2Body },
+              { eyebrow: c.reason3Eyebrow, title: c.reason3Title, body: c.reason3Body },
             ].map((r, idx) => (
               <Reveal key={r.title} delay={idx * 150}>
                 <div className="h-full bg-base-100 border border-base-300/60 rounded-2xl p-8 hover:border-primary/60 transition-colors">
@@ -265,72 +256,32 @@ export function ProjectNeweken() {
         </div>
       </section>
 
-      {/* PULL QUOTE */}
-      <section className="bg-base-100 relative overflow-hidden border-b border-base-300/60">
-        <TopoPattern
-          className="absolute inset-0 w-full h-full text-primary"
-          opacity={0.18}
-        />
-        <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32 relative">
-          <Reveal className="max-w-4xl mx-auto text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-primary mb-6">
-              {n.pullEyebrow}
-            </p>
-            <p className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium leading-snug tracking-tight">
-              {n.pullA}{" "}
-              <em className="not-italic text-primary">{n.pullHighlight}</em>
-              {n.pullB}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* MASTER PLAN */}
-      <section
-        id="avance-de-obra"
-        className="bg-base-200 border-t border-base-300/60"
-      >
+      {/* AMENITIES */}
+      <section id="amenities" className="bg-base-100">
         <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32">
-          <Reveal className="max-w-3xl mb-12">
+          <Reveal className="max-w-3xl mb-14">
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              {n.masterEyebrow}
+              {t.project.amenities}
             </p>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
-              {n.masterTitleA}{" "}
-              <em className="not-italic text-primary">{n.masterHighlight}</em>
+              {t.project.amenitiesTitle}{" "}
+              <em className="not-italic text-primary">
+                {t.project.amenitiesHighlight}
+              </em>
+              {t.project.amenitiesEnd}
             </h2>
           </Reveal>
 
-          <Reveal>
-            <div className="relative rounded-2xl overflow-hidden border border-base-300/60 bg-base-100 aspect-[16/10]">
-              <img
-                src="/projects/neweken/render.jpg"
-                alt="Master plan"
-                className="absolute inset-0 w-full h-full object-contain"
-                loading="lazy"
-              />
-            </div>
-          </Reveal>
-
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-6 gap-4">
-            {stages.map((s, idx) => (
-              <Reveal key={s.name} delay={idx * 80}>
-                <div
-                  className={`h-full border rounded-xl p-5 transition-colors ${
-                    s.active
-                      ? "border-primary bg-primary/10"
-                      : "border-base-300/60 bg-base-100"
-                  }`}
-                >
-                  <p
-                    className={`font-display text-2xl font-semibold ${
-                      s.active ? "text-primary" : ""
-                    }`}
-                  >
-                    {s.name}
-                  </p>
-                  <p className="mt-2 text-xs opacity-75 leading-tight">
-                    {s.status}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {amenities.map((a, idx) => (
+              <Reveal key={a.key} delay={idx * 40}>
+                <div className="group h-full flex flex-col items-center text-center bg-base-200 border border-base-300/60 rounded-xl p-6 hover:border-primary hover:bg-base-300/40 transition-all">
+                  <AmenityIcon
+                    name={a.key}
+                    className="h-10 w-10 text-primary mb-4 group-hover:scale-110 transition-transform"
+                  />
+                  <p className="font-display text-sm sm:text-base font-medium leading-tight uppercase tracking-wide group-hover:text-primary transition-colors">
+                    {tr(a.label)}
                   </p>
                 </div>
               </Reveal>
@@ -339,12 +290,34 @@ export function ProjectNeweken() {
         </div>
       </section>
 
-      {/* GALLERY */}
+      {/* PULL QUOTE */}
+      <section className="bg-base-200 relative overflow-hidden border-y border-base-300/60">
+        <TopoPattern
+          className="absolute inset-0 w-full h-full text-primary"
+          opacity={0.18}
+        />
+        <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32 relative">
+          <Reveal className="max-w-4xl mx-auto text-center">
+            <p className="text-xs uppercase tracking-[0.3em] text-primary mb-6">
+              {project.hashtag}
+            </p>
+            <p className="font-display text-2xl sm:text-3xl lg:text-4xl font-medium leading-snug tracking-tight">
+              {c.pullQuoteA}{" "}
+              <em className="not-italic text-primary">
+                {c.pullQuoteHighlight}
+              </em>
+              {c.pullQuoteB}
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* GALERÍA */}
       <section className="bg-base-100">
         <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32">
           <Reveal className="mb-12">
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              {t.project.progressOfWork}
+              {t.project.renders}
             </p>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight">
               {t.project.gallery}
@@ -376,7 +349,7 @@ export function ProjectNeweken() {
         </div>
       </section>
 
-      {/* INVESTMENT CTA */}
+      {/* INVERSIÓN CTA */}
       <section className="bg-base-200 border-y border-base-300/60 relative overflow-hidden">
         <TopoPattern
           className="absolute inset-0 w-full h-full text-primary"
@@ -385,37 +358,35 @@ export function ProjectNeweken() {
         <div className="container mx-auto px-6 lg:px-10 py-20 lg:py-28 relative text-center">
           <Reveal>
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-              {n.investEyebrow}
+              {c.investEyebrow}
             </p>
             <p className="font-display text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-none">
-              {n.investFromLabel}{" "}
+              {c.investPart1}{" "}
               <span className="text-primary">
-                USD <CountUp target={45900} />
+                <CountUp target={40} />%
               </span>
+              <span className="block sm:inline">{c.investPart2}</span>
             </p>
             <p className="mt-6 opacity-80 max-w-2xl mx-auto leading-relaxed">
-              {n.investBody}
+              {c.investBody}
             </p>
 
             <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
               {[
-                { icon: <IconBlueprint />, title: t.project.plans, body: t.project.plansBody, href: "#contacto" },
-                { icon: <IconDocument />, title: t.project.brochure, body: t.project.brochureBody, href: "#contacto" },
-                { icon: <IconPlay />, title: t.project.progressOfWork, body: t.project.progressBody, href: "#avance-de-obra" },
-              ].map((c) => (
+                { title: t.project.plans, body: t.project.plansBody, href: "#contacto" },
+                { title: t.project.brochure, body: t.project.brochureBody, href: "#contacto" },
+                { title: t.project.amenities, body: t.project.seeAmenitiesBody, href: "#amenities" },
+              ].map((cc) => (
                 <a
-                  key={c.title}
-                  href={c.href}
+                  key={cc.title}
+                  href={cc.href}
                   className="group bg-base-100 hover:bg-primary border border-base-300/60 hover:border-primary rounded-2xl p-6 transition-all text-left"
                 >
-                  <div className="text-primary group-hover:text-primary-content mb-4 transition-colors">
-                    {c.icon}
-                  </div>
                   <p className="font-display text-lg font-semibold mb-1 group-hover:text-primary-content transition-colors">
-                    {c.title}
+                    {cc.title}
                   </p>
                   <p className="text-xs opacity-70 group-hover:opacity-100 group-hover:text-primary-content transition-colors">
-                    {c.body}
+                    {cc.body}
                   </p>
                 </a>
               ))}

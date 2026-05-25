@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useReveal } from "../../hooks/useReveal";
 import { TopoPattern } from "../ui/TopoPattern";
+import { useT } from "../../i18n/LanguageContext";
 
 interface FormState {
   nombre: string;
@@ -13,12 +14,12 @@ const initial: FormState = { nombre: "", email: "", telefono: "", mensaje: "" };
 
 export function Contact() {
   const ref = useReveal<HTMLDivElement>();
+  const t = useT();
   const [form, setForm] = useState<FormState>(initial);
   const [sent, setSent] = useState(false);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // TODO: integrar con servicio real (Formspree / Resend / CRM)
     console.log("Form submission (placeholder):", form);
     setSent(true);
     setForm(initial);
@@ -45,22 +46,21 @@ export function Contact() {
       >
         <div className="lg:sticky lg:top-32">
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
-            Conversemos
+            {t.contact.eyebrow}
           </p>
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-            Tu próxima<br />
-            <em className="not-italic text-primary">oportunidad</em>, a un mensaje.
+            {t.contact.titleA}<br />
+            <em className="not-italic text-primary">{t.contact.titleHighlight}</em>{t.contact.titleB}
           </h2>
           <p className="mt-6 opacity-75 max-w-md leading-relaxed">
-            Dejanos tus datos y un asesor de NEOS te contacta para mostrarte el
-            proyecto que mejor se adapta a tu inversión o estilo de vida.
+            {t.contact.subtitle}
           </p>
 
           <ul className="mt-10 space-y-4 text-sm">
             <li className="flex items-start gap-3">
               <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
               <div>
-                <p className="text-xs uppercase tracking-widest opacity-60">Email</p>
+                <p className="text-xs uppercase tracking-widest opacity-60">{t.common.email}</p>
                 <a href="mailto:info@neos.ar" className="hover:text-primary">
                   info@neos.ar
                 </a>
@@ -69,7 +69,7 @@ export function Contact() {
             <li className="flex items-start gap-3">
               <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
               <div>
-                <p className="text-xs uppercase tracking-widest opacity-60">WhatsApp</p>
+                <p className="text-xs uppercase tracking-widest opacity-60">{t.common.whatsapp}</p>
                 <a href="https://wa.me/5493872233240" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
                   +54 9 387 223 3240
                 </a>
@@ -78,8 +78,8 @@ export function Contact() {
             <li className="flex items-start gap-3">
               <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
               <div>
-                <p className="text-xs uppercase tracking-widest opacity-60">Oficina</p>
-                <p>Leguizamón 1946 · Salta · Argentina</p>
+                <p className="text-xs uppercase tracking-widest opacity-60">{t.common.office}</p>
+                <p>{t.common.address}</p>
               </div>
             </li>
           </ul>
@@ -92,7 +92,7 @@ export function Contact() {
           <div className="grid sm:grid-cols-2 gap-5">
             <label className="block">
               <span className="block text-xs uppercase tracking-widest opacity-70 mb-2">
-                Nombre
+                {t.contact.fName}
               </span>
               <input
                 required
@@ -104,7 +104,7 @@ export function Contact() {
             </label>
             <label className="block">
               <span className="block text-xs uppercase tracking-widest opacity-70 mb-2">
-                E-mail
+                {t.contact.fEmail}
               </span>
               <input
                 required
@@ -117,7 +117,7 @@ export function Contact() {
           </div>
           <label className="block">
             <span className="block text-xs uppercase tracking-widest opacity-70 mb-2">
-              Teléfono
+              {t.contact.fPhone}
             </span>
             <input
               type="tel"
@@ -128,7 +128,7 @@ export function Contact() {
           </label>
           <label className="block">
             <span className="block text-xs uppercase tracking-widest opacity-70 mb-2">
-              Mensaje <span className="opacity-50">(opcional)</span>
+              {t.contact.fMessage} <span className="opacity-50">{t.contact.fMessageOptional}</span>
             </span>
             <textarea
               rows={4}
@@ -141,11 +141,9 @@ export function Contact() {
             type="submit"
             className="btn btn-primary w-full rounded-full text-base h-12"
           >
-            {sent ? "¡Recibido! Te escribimos pronto ✓" : "Enviar consulta →"}
+            {sent ? t.contact.submitted : t.contact.submit}
           </button>
-          <p className="text-xs opacity-60 text-center">
-            Al enviar aceptás ser contactado por un asesor de NEOS.
-          </p>
+          <p className="text-xs opacity-60 text-center">{t.contact.disclaimer}</p>
         </form>
       </div>
     </section>

@@ -1,8 +1,10 @@
 import { useReveal } from "../../hooks/useReveal";
 import { TopoPattern } from "../ui/TopoPattern";
+import { useT } from "../../i18n/LanguageContext";
 
 export function BrochureCTA() {
   const ref = useReveal<HTMLDivElement>();
+  const t = useT();
 
   return (
     <section className="bg-base-100 py-16">
@@ -17,21 +19,18 @@ export function BrochureCTA() {
           />
           <div className="relative max-w-xl">
             <p className="text-xs uppercase tracking-[0.3em] text-primary mb-3">
-              Material institucional
+              {t.brochure.eyebrow}
             </p>
             <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight tracking-tight">
-              Descargá el portfolio NEOS.
+              {t.brochure.title}
             </h3>
-            <p className="mt-4 opacity-80">
-              Brochure consolidado con todos los proyectos, plantas y datos de
-              inversión.
-            </p>
+            <p className="mt-4 opacity-80">{t.brochure.body}</p>
           </div>
           <a
             href="#contacto"
             className="relative btn btn-primary rounded-full px-8 text-base"
           >
-            Solicitar brochure →
+            {t.brochure.cta}
           </a>
         </div>
       </div>

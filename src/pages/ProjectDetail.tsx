@@ -1,6 +1,7 @@
 import { useParams, Navigate } from "react-router-dom";
 import { projects } from "../data/projects";
 import { ProjectNeweken } from "./ProjectNeweken";
+import { ProjectChaquies } from "./ProjectChaquies";
 import { ProjectComingSoon } from "./ProjectComingSoon";
 
 export function ProjectDetail() {
@@ -10,6 +11,7 @@ export function ProjectDetail() {
   if (!project) return <Navigate to="/" replace />;
 
   if (slug === "neweken") return <ProjectNeweken />;
+  if (slug === "chaquies") return <ProjectChaquies />;
 
   return <ProjectComingSoon project={project} />;
 }
