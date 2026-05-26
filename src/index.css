@@ -120,3 +120,66 @@ body {
 .ken-burns {
   animation: ken-burns 14s ease-in-out infinite alternate;
 }
+
+/* Leaflet — overrides para alinear con el tema NEOS */
+.leaflet-container {
+  background: #14141a;
+  font-family: "Inter Tight", system-ui, sans-serif;
+  outline: none;
+}
+
+.leaflet-control-attribution {
+  background: rgba(20, 20, 26, 0.7) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-size: 9px !important;
+  backdrop-filter: blur(4px);
+  padding: 1px 6px !important;
+}
+.leaflet-control-attribution a {
+  color: rgba(233, 30, 140, 0.85) !important;
+}
+
+.leaflet-tooltip {
+  background: rgba(10, 10, 10, 0.92) !important;
+  color: #f5f5f5 !important;
+  border: 1px solid rgba(245, 245, 245, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  font-size: 10px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  backdrop-filter: blur(6px);
+}
+.leaflet-tooltip-top:before {
+  border-top-color: rgba(10, 10, 10, 0.92) !important;
+}
+
+/* Variante mini-card con hero del proyecto (en hover de dot con projectSlug) */
+.leaflet-tooltip.neos-project-tooltip {
+  background: rgba(10, 10, 10, 0.95) !important;
+  border: 1px solid rgba(245, 245, 245, 0.18) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+  font-size: 12px !important;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 6px !important;
+  border-radius: 8px !important;
+  white-space: normal;
+  max-width: none;
+}
+.leaflet-tooltip-top.neos-project-tooltip:before {
+  border-top-color: rgba(10, 10, 10, 0.95) !important;
+}
+
+/* Pulso del marker activo (proyectos en obra) */
+@keyframes neos-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}

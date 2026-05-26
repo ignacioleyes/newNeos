@@ -7,11 +7,16 @@ export interface MapDot {
   lng: number;
   label: string;
   status: DotStatus;
+  /** Slug del proyecto en data/projects.ts. Si está presente, el dot
+   * muestra en hover un mini-card con el hero del proyecto. */
+  projectSlug?: string;
 }
 
 export interface RegionMapData {
-  image: string | null;
-  bbox: { north: number; south: number; east: number; west: number };
+  /** [lat, lng] del centro del mapa en su zoom inicial */
+  center: [number, number];
+  /** Zoom level de Leaflet (5 = país, 11 = ciudad, 13 = pueblo, 15 = calles) */
+  zoom: number;
 }
 
 export interface Region {
@@ -36,10 +41,8 @@ export const regions: Region[] = [
     projectsCount: 2,
     coords: { lat: -24.78, lng: -65.41 },
     map: {
-      image: "/maps/salta.webp",
-      // bbox de la provincia entera (la imagen muestra toda Salta, no solo
-      // el Valle de Lerma como sugería el spec original)
-      bbox: { north: -22, south: -26.5, west: -68.5, east: -62.5 },
+      center: [-24.78, -65.41],
+      zoom: 11, // Área del Valle de Lerma (Salta capital + alrededores)
     },
     dots: [
       {
@@ -47,12 +50,14 @@ export const regions: Region[] = [
         lng: -65.4106,
         label: "Greet Balcarce",
         status: "in-progress",
+        projectSlug: "greet-balcarce",
       },
       {
         lat: -24.7178,
         lng: -65.5022,
         label: "El Cauce Castellanos",
         status: "in-progress",
+        projectSlug: "el-cauce-castellanos",
       },
     ],
     gradient: "from-rose-600/30 to-zinc-900",
@@ -67,32 +72,25 @@ export const regions: Region[] = [
     projectsCount: 2,
     coords: { lat: -26.07, lng: -65.97 },
     map: {
-      // Reutilizamos el mismo mapa de Salta provincia — Cafayate es un
-      // departamento del sur de la provincia, así que aparece sobre la
-      // misma imagen pero con los dots en la zona inferior.
-      image: "/maps/salta.webp",
-      // Bbox extendido al sur (hasta -26.9) para empujar los dots de
-      // Cafayate al ~84% from top, dentro del departamento Cafayate.
-      bbox: { north: -22, south: -26.9, west: -68.5, east: -62.5 },
+      center: [-26.075, -65.972],
+      zoom: 14, // Pueblo de Cafayate (zoom de calles)
     },
-    // Coords reales de Chaquíes y Mercatus están a ~330m entre sí (ambos
-    // en Cafayate ciudad). En la escala de la provincia eso = 0 píxeles
-    // de separación → los dots se superponen como uno solo. Acá los
-    // separamos artificialmente ~0.05° (similar al spread de los dots de
-    // Salta capital) para que se lean como dos puntos distintos. Si en
-    // el futuro pasamos a un mapa de zoom de ciudad, restaurar coords reales.
+    // Coords reales — Chaquíes y Mercatus están a ~330m en Cafayate ciudad.
+    // Con zoom 14 se ven como dos dots distintos sin necesidad de spread artificial.
     dots: [
       {
-        lat: -26.10,
-        lng: -66.00,
+        lat: -26.0744,
+        lng: -65.9741,
         label: "Chaquíes",
         status: "in-progress",
+        projectSlug: "chaquies",
       },
       {
-        lat: -26.05,
-        lng: -65.94,
+        lat: -26.0712,
+        lng: -65.9722,
         label: "Mercatus",
         status: "in-progress",
+        projectSlug: "mercatus",
       },
     ],
     gradient: "from-amber-600/30 to-zinc-900",
@@ -107,8 +105,8 @@ export const regions: Region[] = [
     projectsCount: 1,
     coords: { lat: -38.36, lng: -68.78 },
     map: {
-      image: "/maps/argentina.jpg",
-      bbox: { north: -21.5, south: -55.5, west: -74, east: -52 },
+      center: [-38.36, -68.78],
+      zoom: 7, // Norte de la Patagonia (Neuquén + Río Negro)
     },
     dots: [
       {
@@ -116,6 +114,7 @@ export const regions: Region[] = [
         lng: -68.7864,
         label: "Neweken — Añelo",
         status: "in-progress",
+        projectSlug: "neweken",
       },
     ],
     gradient: "from-fuchsia-700/30 to-zinc-900",

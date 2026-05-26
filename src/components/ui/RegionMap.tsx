@@ -1,5 +1,9 @@
-import { useState } from "react";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import type { MapDot, RegionMapData } from "../../data/regions";
+import { projects, type Project } from "../../data/projects";
+import { useTr } from "../../i18n/LanguageContext";
 
 interface RegionMapProps {
   map: RegionMapData;
@@ -7,97 +11,109 @@ interface RegionMapProps {
   className?: string;
 }
 
+// Marker activo — magenta con pulso (proyectos en obra)
+const ACTIVE_ICON = L.divIcon({
+  className: "neos-marker",
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+  html: `
+    <div style="position:relative;width:30px;height:30px;">
+      <span style="position:absolute;inset:0;border-radius:50%;background:#e91e8c;opacity:0.3;animation:neos-pulse 2s ease-out infinite;"></span>
+      <span style="position:absolute;inset:3px;border-radius:50%;background:#e91e8c;opacity:0.2;"></span>
+      <span style="position:absolute;inset:8px;border-radius:50%;background:#e91e8c;border:2px solid #0a0a0a;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></span>
+    </div>
+  `,
+});
+
+// Marker finalizado — blanco chiquito sin pulso (proyectos entregados)
+const FINALIZED_ICON = L.divIcon({
+  className: "neos-marker",
+  iconSize: [10, 10],
+  iconAnchor: [5, 5],
+  html: `<div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.85);border:2px solid #0a0a0a;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>`,
+});
+
+const CARTO_DARK_URL =
+  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+
+const CARTO_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+function findProject(slug: string | undefined): Project | null {
+  if (!slug) return null;
+  return projects.find((p) => p.slug === slug) ?? null;
+}
+
 /**
- * Equirectangular projection de lat/lng a una fracción (0–1) dentro del bbox.
- * Linear en ambos ejes — apropiado para outlines de provincias / países
- * dibujados sin proyección Mercator (que es lo que usan nuestras imágenes
- * actuales). Si en el futuro pasamos a mapas Mercator estilo Mapbox, hay
- * que volver a la proyección Mercator en Y.
+ * Mapa interactivo (decorativo) de una región con dots de proyectos.
+ * Usa Leaflet + tiles CartoDB Dark Matter (free, sin API key).
+ *
+ * En hover de un dot que tenga `projectSlug`, aparece un mini-card con
+ * el hero del proyecto, nombre y tagline. Si no, tooltip simple con label.
  */
-function projectToFraction(
-  lat: number,
-  lng: number,
-  bbox: RegionMapData["bbox"]
-) {
-  const x = (lng - bbox.west) / (bbox.east - bbox.west);
-  const y = (bbox.north - lat) / (bbox.north - bbox.south);
-  return { x, y };
-}
-
-function Dot({
-  dot,
-  fraction,
-}: {
-  dot: MapDot;
-  fraction: { x: number; y: number };
-}) {
-  const active = dot.status === "in-progress";
-  return (
-    <span
-      className="absolute -translate-x-1/2 -translate-y-1/2 group/dot"
-      style={{ left: `${fraction.x * 100}%`, top: `${fraction.y * 100}%` }}
-      aria-label={dot.label}
-    >
-      {active && (
-        <>
-          <span className="absolute inset-0 -m-3 rounded-full bg-primary opacity-30 animate-ping" />
-          <span className="absolute inset-0 -m-2 rounded-full bg-primary/25" />
-        </>
-      )}
-      <span
-        className={`relative block rounded-full ring-2 ring-base-100 shadow-lg ${
-          active
-            ? "bg-primary w-3.5 h-3.5"
-            : "bg-white/80 w-2 h-2"
-        }`}
-      />
-      <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-full mt-2 whitespace-nowrap text-[10px] uppercase tracking-widest bg-base-100/90 backdrop-blur px-2 py-0.5 rounded opacity-0 group-hover/dot:opacity-100 transition-opacity">
-        {dot.label}
-      </span>
-    </span>
-  );
-}
-
 export function RegionMap({ map, dots, className }: RegionMapProps) {
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
-  const showImage = map.image && !imgError;
+  const tr = useTr();
 
   return (
     <div className={`relative w-full h-full ${className ?? ""}`}>
-      {/* Backdrop oscuro siempre visible — tapa las zonas transparentes de
-       * las imágenes WebP/PNG y sirve también como fallback mientras
-       * carga / si la imagen falla. */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(233,30,140,0.12),transparent_70%)] bg-base-200" />
-
-      {/* Imagen del mapa por encima */}
-      {showImage && (
-        <img
-          src={map.image as string}
-          alt=""
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-            imgLoaded ? "opacity-100" : "opacity-0"
-          }`}
-          onLoad={() => setImgLoaded(true)}
-          onError={() => setImgError(true)}
+      <MapContainer
+        center={map.center}
+        zoom={map.zoom}
+        zoomControl={false}
+        dragging={false}
+        scrollWheelZoom={false}
+        doubleClickZoom={false}
+        touchZoom={false}
+        keyboard={false}
+        boxZoom={false}
+        attributionControl={true}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url={CARTO_DARK_URL}
+          attribution={CARTO_ATTRIBUTION}
+          subdomains="abcd"
+          maxZoom={20}
         />
-      )}
-
-      {/* Dots layer — projected from real lat/lng using bbox */}
-      <div className="absolute inset-0">
         {dots.map((dot) => {
-          const fraction = projectToFraction(dot.lat, dot.lng, map.bbox);
-          // Skip dots that fall outside the bbox (clamp for safety)
-          if (
-            fraction.x < 0 ||
-            fraction.x > 1 ||
-            fraction.y < 0 ||
-            fraction.y > 1
-          )
-            return null;
-          return <Dot key={dot.label} dot={dot} fraction={fraction} />;
+          const project = findProject(dot.projectSlug);
+          const icon =
+            dot.status === "in-progress" ? ACTIVE_ICON : FINALIZED_ICON;
+
+          return (
+            <Marker key={dot.label} position={[dot.lat, dot.lng]} icon={icon}>
+              {project ? (
+                <Tooltip
+                  className="neos-project-tooltip"
+                  direction="top"
+                  offset={[0, -12]}
+                >
+                  <div className="w-[150px]">
+                    <div className="aspect-[16/10] overflow-hidden rounded-md bg-base-300">
+                      <img
+                        src={project.heroImage}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        draggable={false}
+                      />
+                    </div>
+                    <p className="mt-1.5 text-xs font-semibold text-white leading-tight">
+                      {project.name}
+                    </p>
+                    <p className="mt-0.5 text-[10px] text-white/60 leading-snug">
+                      {tr(project.tagline)}
+                    </p>
+                  </div>
+                </Tooltip>
+              ) : (
+                <Tooltip direction="top" offset={[0, -10]}>
+                  {dot.label}
+                </Tooltip>
+              )}
+            </Marker>
+          );
         })}
-      </div>
+      </MapContainer>
     </div>
   );
 }
