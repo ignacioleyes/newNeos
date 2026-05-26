@@ -9,8 +9,8 @@ export function Regions() {
 
   return (
     <section className="bg-base-100 relative">
-      <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32">
-        <Reveal className="max-w-3xl mb-14">
+      <div className="container mx-auto px-6 lg:px-10 py-16 lg:py-20">
+        <Reveal className="max-w-3xl mb-10">
           <p className="text-xs uppercase tracking-[0.3em] text-primary mb-4">
             {t.regions.eyebrow}
           </p>
@@ -22,7 +22,7 @@ export function Regions() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {regions.map((r, idx) => (
             <Reveal key={r.slug} delay={idx * 100}>
-              <div className="group relative overflow-hidden rounded-xl border border-base-300/60 bg-base-200 aspect-[3/4] hover:border-primary/60 transition-colors h-full">
+              <div className="group relative overflow-hidden rounded-xl border border-base-300/60 bg-base-200 aspect-[5/6] hover:border-primary/60 transition-colors h-full">
                 <RegionMap
                   map={r.map}
                   dots={r.dots}

@@ -36,8 +36,10 @@ export const regions: Region[] = [
     projectsCount: 2,
     coords: { lat: -24.78, lng: -65.41 },
     map: {
-      image: "/maps/salta.png",
-      bbox: { north: -24.4, south: -25.2, west: -65.7, east: -64.8 },
+      image: "/maps/salta.webp",
+      // bbox de la provincia entera (la imagen muestra toda Salta, no solo
+      // el Valle de Lerma como sugería el spec original)
+      bbox: { north: -22, south: -26.5, west: -68.5, east: -62.5 },
     },
     dots: [
       {
@@ -65,19 +67,30 @@ export const regions: Region[] = [
     projectsCount: 2,
     coords: { lat: -26.07, lng: -65.97 },
     map: {
-      image: "/maps/cafayate.png",
-      bbox: { north: -26.05, south: -26.1, west: -66.0, east: -65.93 },
+      // Reutilizamos el mismo mapa de Salta provincia — Cafayate es un
+      // departamento del sur de la provincia, así que aparece sobre la
+      // misma imagen pero con los dots en la zona inferior.
+      image: "/maps/salta.webp",
+      // Bbox extendido al sur (hasta -26.9) para empujar los dots de
+      // Cafayate al ~84% from top, dentro del departamento Cafayate.
+      bbox: { north: -22, south: -26.9, west: -68.5, east: -62.5 },
     },
+    // Coords reales de Chaquíes y Mercatus están a ~330m entre sí (ambos
+    // en Cafayate ciudad). En la escala de la provincia eso = 0 píxeles
+    // de separación → los dots se superponen como uno solo. Acá los
+    // separamos artificialmente ~0.05° (similar al spread de los dots de
+    // Salta capital) para que se lean como dos puntos distintos. Si en
+    // el futuro pasamos a un mapa de zoom de ciudad, restaurar coords reales.
     dots: [
       {
-        lat: -26.0744,
-        lng: -65.9741,
+        lat: -26.10,
+        lng: -66.00,
         label: "Chaquíes",
         status: "in-progress",
       },
       {
-        lat: -26.0712,
-        lng: -65.9722,
+        lat: -26.05,
+        lng: -65.94,
         label: "Mercatus",
         status: "in-progress",
       },
@@ -94,7 +107,7 @@ export const regions: Region[] = [
     projectsCount: 1,
     coords: { lat: -38.36, lng: -68.78 },
     map: {
-      image: "/maps/argentina.png",
+      image: "/maps/argentina.jpg",
       bbox: { north: -21.5, south: -55.5, west: -74, east: -52 },
     },
     dots: [

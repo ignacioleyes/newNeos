@@ -8,8 +8,11 @@ interface RegionMapProps {
 }
 
 /**
- * Web Mercator projection of lat/lng to a fraction (0–1) inside a bbox.
- * Uses Mercator on the Y axis (accurate at country scale) and linear on X.
+ * Equirectangular projection de lat/lng a una fracción (0–1) dentro del bbox.
+ * Linear en ambos ejes — apropiado para outlines de provincias / países
+ * dibujados sin proyección Mercator (que es lo que usan nuestras imágenes
+ * actuales). Si en el futuro pasamos a mapas Mercator estilo Mapbox, hay
+ * que volver a la proyección Mercator en Y.
  */
 function projectToFraction(
   lat: number,
@@ -17,11 +20,7 @@ function projectToFraction(
   bbox: RegionMapData["bbox"]
 ) {
   const x = (lng - bbox.west) / (bbox.east - bbox.west);
-  const mercY = (l: number) =>
-    Math.log(Math.tan(Math.PI / 4 + (l * Math.PI) / 360));
-  const y =
-    (mercY(bbox.north) - mercY(lat)) /
-    (mercY(bbox.north) - mercY(bbox.south));
+  const y = (bbox.north - lat) / (bbox.north - bbox.south);
   return { x, y };
 }
 
@@ -66,7 +65,12 @@ export function RegionMap({ map, dots, className }: RegionMapProps) {
 
   return (
     <div className={`relative w-full h-full ${className ?? ""}`}>
-      {/* Real styled map image */}
+      {/* Backdrop oscuro siempre visible — tapa las zonas transparentes de
+       * las imágenes WebP/PNG y sirve también como fallback mientras
+       * carga / si la imagen falla. */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(233,30,140,0.12),transparent_70%)] bg-base-200" />
+
+      {/* Imagen del mapa por encima */}
       {showImage && (
         <img
           src={map.image as string}
@@ -77,11 +81,6 @@ export function RegionMap({ map, dots, className }: RegionMapProps) {
           onLoad={() => setImgLoaded(true)}
           onError={() => setImgError(true)}
         />
-      )}
-
-      {/* Fallback while image is missing / not yet exported */}
-      {(!showImage || !imgLoaded) && (
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(233,30,140,0.15),transparent_70%)] bg-base-200" />
       )}
 
       {/* Dots layer — projected from real lat/lng using bbox */}
