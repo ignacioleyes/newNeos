@@ -616,4 +616,4 @@ El plan original incluía una Edge Function que mandaba un email a `info@neos.ar
 
 ### Trade-off aceptado
 
-Hasta que la app de Fase 2 esté lista, los leads quedan en la tabla sin que nadie los vea automáticamente. **Mientras tanto, el comercial revisa el [Table Editor de Supabase](https://supabase.com/dashboard/project/slgrwwgmfrrqaludqbhy/editor) manualmente.** Es un período de transición chico (semanas, no meses) y el costo es bajo vs. lo que se gana en el pitch.
+Hasta que la app de Fase 2 esté lista, los leads quedan en la tabla sin que nadie los vea automáticamente. **Mientras tanto, el comercial revisa el [Table Editor de Supabase](https://supabase.com/dashboard/project/ecmlccnxzgajozsrnbjn/editor) manualmente.** Es un período de transición chico (semanas, no meses) y el costo es bajo vs. lo que se gana en el pitch.

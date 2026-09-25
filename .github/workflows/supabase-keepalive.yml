@@ -1,0 +1,72 @@
+name: Supabase keepalive
+
+# El free tier de Supabase pausa los proyectos después de ~7 días sin
+# actividad. Este workflow le pega a la función public.ping() dos veces por
+# semana para que eso no pase — el proyecto anterior se perdió así.
+#
+# Necesita dos secrets del repo (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL       https://xxxxxxxx.supabase.co
+#   SUPABASE_ANON_KEY  la publishable key (sb_publishable_...)
+#
+# La key es pública por diseño (viaja al navegador en el bundle), pero va como
+# secret igual: así se rota en un solo lugar y no queda en el historial de git.
+
+on:
+  # Lunes y jueves 12:00 UTC (09:00 ART). Deja gaps de 3 y 4 días — cómodo
+  # dentro de la ventana de 7. Si un run falla, el siguiente llega a tiempo.
+  schedule:
+    - cron: "0 12 * * 1,4"
+  # Para poder dispararlo a mano desde la pestaña Actions.
+  workflow_dispatch:
+
+# Sin permisos sobre el repo: este job sólo hace una request salida.
+permissions: {}
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SUPABASE_URL}" ] || [ -z "${SUPABASE_ANON_KEY}" ]; then
+            echo "::error::Faltan los secrets SUPABASE_URL y/o SUPABASE_ANON_KEY."
+            exit 1
+          fi
+
+          # --retry cubre blips de red: sin esto un timeout casual manda un mail
+          # de "workflow failed" que no significa nada.
+          code=$(curl -sS \
+            --retry 3 --retry-delay 10 --retry-connrefused \
+            --max-time 30 \
+            -o response.txt -w '%{http_code}' \
+            -X POST "${SUPABASE_URL}/rest/v1/rpc/ping" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{}' || true)
+
+          body=$(cat response.txt 2>/dev/null || echo '<sin cuerpo>')
+          echo "HTTP ${code:-000} — ${body}"
+
+          if [ "${code}" = "200" ]; then
+            echo "Proyecto despierto. Timestamp devuelto: ${body}"
+            exit 0
+          fi
+
+          echo "::error::El ping falló (HTTP ${code:-000}). Causas típicas:"
+          echo "  000/5xx → el proyecto ya está pausado. Hay que reactivarlo a"
+          echo "            mano desde el dashboard; el cron no lo despierta."
+          echo "  401     → la publishable key cambió o se rotó. Actualizar el secret."
+          echo "  404     → falta la función ping(). Correr la migración"
+          echo "            supabase/migrations/20260925150000_add_ping_function.sql"
+          exit 1
