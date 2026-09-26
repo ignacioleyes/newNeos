@@ -105,6 +105,7 @@ Las migraciones se nombran con el formato `YYYYMMDDHHMMSS_descripcion.sql` (conv
 | `20260926200000_create_projects_schema.sql` | `regions`, `projects`, `project_sections` + RLS — landing administrable | ✅ Ejecutada |
 | `20260926200100_seed_projects_from_source.sql` | Carga inicial de las 3 regiones y los 5 proyectos | ✅ Ejecutada |
 | `20260926210000_seed_project_sections.sql` | Secciones de detalle de Chaquíes y Neweken | ✅ Ejecutada |
+| `20260926220000_employees_and_rls_hardening.sql` | Tabla `employees` + RLS por pertenencia en vez de por estar logueado | ✅ Ejecutada |
 
 > En el proyecto actual (`ecmlccnxzgajozsrnbjn`, creado 2026-09-25) las dos primeras se aplicaron juntas a mano en el SQL Editor y después se registraron con `migration repair`; la tercera ya entró por `db push`. `yarn db:status` es la fuente de verdad — esta tabla es para leer el historial de un vistazo.
 
@@ -117,6 +118,45 @@ Las migraciones se nombran con el formato `YYYYMMDDHHMMSS_descripcion.sql` (conv
 5. Verificar en el log que dice `Success. No rows returned.`
 
 ---
+
+## Acceso al panel — dar de alta a alguien
+
+Escribir contenido **no** depende de estar logueado: depende de figurar en
+`employees` y estar activo. La RLS lo exige vía `is_employee()`.
+
+> **Por qué así.** Supabase Auth permite registro público con la anon key salvo
+> que se desactive, y la anon key viaja en el bundle del navegador. Si las
+> policies dijeran sólo `to authenticated`, cualquiera podría registrarse solo y
+> editar la landing — y leer `leads`, que tiene datos personales. Con esta
+> condición, un registro espontáneo no puede tocar nada.
+
+Dar de alta a alguien son **dos pasos**, y hacen falta los dos:
+
+1. Crear el usuario en [Authentication → Users](https://supabase.com/dashboard/project/ecmlccnxzgajozsrnbjn/auth/users) → **Add user**, con *Auto Confirm User* marcado (no hay mails de confirmación configurados).
+2. Crear su fila en `employees`:
+
+```sql
+insert into public.employees (id, email, name, role)
+select u.id, u.email, 'Nombre Apellido', 'editor'
+from auth.users u
+where u.email = 'persona@neos.ar';
+```
+
+Roles: `editor` administra contenido, `admin` además gestiona empleados.
+
+**Para dar de baja no hay que borrar la fila** — alcanza con `is_active = false`.
+Así queda el registro de quién tuvo acceso:
+
+```sql
+update public.employees set is_active = false where email = 'persona@neos.ar';
+```
+
+> También conviene tener desactivado *Allow new users to sign up* en
+> [Sign In / Providers](https://supabase.com/dashboard/project/ecmlccnxzgajozsrnbjn/auth/providers).
+> La RLS ya alcanza; esto evita que se acumulen usuarios fantasma en `auth.users`.
+
+---
+
 
 ## Arquitectura actual (Fase 1 — Lead capture)
 
