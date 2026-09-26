@@ -102,6 +102,8 @@ Las migraciones se nombran con el formato `YYYYMMDDHHMMSS_descripcion.sql` (conv
 | `20260525120000_create_leads_table.sql` | Tabla `leads` con RLS, índices y policies base | ✅ Ejecutada |
 | `20260525130000_add_message_to_leads.sql` | Agrega columna `message` para mensajes libres del formulario de contacto | ✅ Ejecutada |
 | `20260925150000_add_ping_function.sql` | Función `ping()` para el keepalive del free tier | ✅ Ejecutada |
+| `20260926200000_create_projects_schema.sql` | `regions`, `projects`, `project_sections` + RLS — landing administrable | ✅ Ejecutada |
+| `20260926200100_seed_projects_from_source.sql` | Carga inicial de las 3 regiones y los 5 proyectos | ✅ Ejecutada |
 
 > En el proyecto actual (`ecmlccnxzgajozsrnbjn`, creado 2026-09-25) las dos primeras se aplicaron juntas a mano en el SQL Editor y después se registraron con `migration repair`; la tercera ya entró por `db push`. `yarn db:status` es la fuente de verdad — esta tabla es para leer el historial de un vistazo.
 
