@@ -70,6 +70,9 @@ export type LeadInsert = {
 // los tipos quedan para uso en la app.
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
-    persistSession: false,
+    // El panel necesita que la sesión sobreviva a recargas. Para el público
+    // no cambia nada: sin login no hay sesión que guardar.
+    persistSession: true,
+    autoRefreshToken: true,
   },
 });
