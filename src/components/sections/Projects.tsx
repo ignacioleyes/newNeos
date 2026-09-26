@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { projects, type Project } from "../../data/projects";
+import type { Project } from "../../data/projects";
+import { useProjectsSplit } from "../../hooks/useContent";
 import { Reveal } from "../ui/Reveal";
 import { useT, useTr } from "../../i18n/LanguageContext";
 import type { Messages } from "../../i18n/strings";
@@ -150,6 +151,10 @@ function ProjectCard({
 
 export function Projects() {
   const t = useT();
+  const tr = useTr();
+  // `grid` arma la composición de arriba; `rest` es lo que excede su capacidad.
+  const { grid, rest } = useProjectsSplit();
+
   return (
     <section id="proyectos" className="relative bg-base-100">
       <div className="container mx-auto px-6 lg:px-10 py-24 lg:py-32">
@@ -166,16 +171,64 @@ export function Projects() {
         </Reveal>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[1fr]">
-          {projects.map((p, idx) => (
+          {grid.map((p, idx) => (
             <Reveal
               key={p.slug}
               delay={idx * 120}
-              className={idx === 0 ? "lg:col-span-2 lg:row-span-2" : ""}
+              className={p.isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}
             >
-              <ProjectCard project={p} featured={idx === 0} />
+              <ProjectCard project={p} featured={p.isFeatured} />
             </Reveal>
           ))}
         </div>
+
+        {/* Trayectoria — los que exceden la capacidad de la grilla.
+            Va en <details> a propósito: el contenido queda en el DOM aunque
+            esté colapsado, así los buscadores indexan los proyectos y sus
+            links existen. Un render condicional los haría invisibles. */}
+        {rest.length > 0 && (
+          <Reveal className="mt-14">
+            <details className="group border-t border-base-300/60 pt-8">
+              <summary className="flex cursor-pointer list-none items-baseline justify-between gap-4">
+                <span>
+                  <span className="font-display text-2xl font-semibold tracking-tight">
+                    {t.projects.trackRecordTitle}
+                  </span>
+                  <span className="ml-3 text-sm opacity-60">
+                    {t.projects.trackRecordSubtitle}
+                  </span>
+                </span>
+                <span className="shrink-0 text-primary text-sm transition-transform duration-300 group-open:rotate-180">
+                  ▾
+                </span>
+              </summary>
+
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {rest.map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      to={`/proyectos/${p.slug}`}
+                      className="group/item flex items-center gap-4 rounded-xl border border-base-300/60 bg-base-200 p-4 transition-colors duration-300 hover:border-primary/60"
+                    >
+                      <img
+                        src={p.heroImage}
+                        alt={p.name}
+                        loading="lazy"
+                        className="h-14 w-14 shrink-0 rounded-lg object-cover"
+                      />
+                      <span className="min-w-0">
+                        <span className="block truncate font-medium">{p.name}</span>
+                        <span className="block truncate text-xs opacity-60">
+                          {tr(p.location)} · {tr(p.statusLabel)}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </Reveal>
+        )}
       </div>
     </section>
   );

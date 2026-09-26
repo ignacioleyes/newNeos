@@ -58,6 +58,9 @@ export const messages = {
       specAmenities: "Amenities",
       specInvestment: "Inversión",
       amenitiesCount: (n: number) => `${n} amenities`,
+      trackRecordTitle: "Trayectoria",
+      trackRecordSubtitle:
+        "Desarrollos que ya forman parte del recorrido de NEOS.",
     },
     regions: {
       eyebrow: "Dónde construimos",
@@ -396,6 +399,9 @@ export const messages = {
       specAmenities: "Amenities",
       specInvestment: "Investment",
       amenitiesCount: (n: number) => `${n} amenities`,
+      trackRecordTitle: "Track record",
+      trackRecordSubtitle:
+        "Developments that are already part of the NEOS story.",
     },
     regions: {
       eyebrow: "Where we build",

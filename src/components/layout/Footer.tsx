@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { NeosLogo } from "../ui/NeosLogo";
 import { TopoPattern } from "../ui/TopoPattern";
-import { projects } from "../../data/projects";
+import { useProjects } from "../../hooks/useContent";
 import { useT } from "../../i18n/LanguageContext";
 
 const socials = [
@@ -12,6 +12,7 @@ const socials = [
 
 export function Footer() {
   const t = useT();
+  const projects = useProjects();
 
   return (
     <footer className="relative bg-base-100 text-base-content/80 border-t border-base-300/60 overflow-hidden">

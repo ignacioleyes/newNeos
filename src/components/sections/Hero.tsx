@@ -1,10 +1,11 @@
 import { TopoPattern } from "../ui/TopoPattern";
 import { HeroImageCarousel } from "../ui/HeroImageCarousel";
-import { projects } from "../../data/projects";
+import { useProjects } from "../../hooks/useContent";
 import { useT, useTr } from "../../i18n/LanguageContext";
 
 export function Hero() {
   const t = useT();
+  const projects = useProjects();
   const tr = useTr();
 
   const heroSlides = projects.map((p) => ({

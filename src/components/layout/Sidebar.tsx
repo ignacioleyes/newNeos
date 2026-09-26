@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { projects } from "../../data/projects";
+import { useProjects } from "../../hooks/useContent";
 import { NeosMark } from "../ui/NeosMark";
 import { WhatsAppIcon } from "../ui/WhatsAppIcon";
 import { useT } from "../../i18n/LanguageContext";
@@ -18,6 +18,7 @@ const socials = [
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const t = useT();
+  const projects = useProjects();
   const [projectsExpanded, setProjectsExpanded] = useState(false);
 
   useEffect(() => {

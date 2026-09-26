@@ -1,4 +1,4 @@
-import { projects } from "../data/projects";
+import type { Project } from "../data/projects";
 import type { Messages } from "../i18n/strings";
 import type { Lang } from "../i18n/types";
 import type { LeadInterest, LeadRegion } from "../lib/supabase";
@@ -92,6 +92,7 @@ export function buildQuickReplies(
  * en el shape que consume NeoProjectCards (con tagline ya traducido).
  */
 export function getProjectsForRegion(
+  projects: Project[],
   region: LeadRegion | null | undefined,
   lang: Lang,
 ): ProjectCardData[] {
@@ -108,7 +109,10 @@ export function getProjectsForRegion(
     }));
 }
 
-export function getProjectName(slug: string | undefined): string | undefined {
+export function getProjectName(
+  projects: Project[],
+  slug: string | undefined,
+): string | undefined {
   if (!slug) return undefined;
   return projects.find((p) => p.slug === slug)?.name;
 }

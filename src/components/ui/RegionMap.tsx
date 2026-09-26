@@ -2,7 +2,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import type { MapDot, RegionMapData } from "../../data/regions";
-import { projects, type Project } from "../../data/projects";
+import type { Project } from "../../data/projects";
+import { useProjects } from "../../hooks/useContent";
 import { useTr } from "../../i18n/LanguageContext";
 
 interface RegionMapProps {
@@ -39,7 +40,7 @@ const CARTO_DARK_URL =
 const CARTO_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
 
-function findProject(slug: string | undefined): Project | null {
+function findProject(projects: Project[], slug: string | undefined): Project | null {
   if (!slug) return null;
   return projects.find((p) => p.slug === slug) ?? null;
 }
@@ -53,6 +54,7 @@ function findProject(slug: string | undefined): Project | null {
  */
 export function RegionMap({ map, dots, className }: RegionMapProps) {
   const tr = useTr();
+  const projects = useProjects();
 
   return (
     <div className={`relative w-full h-full ${className ?? ""}`}>
@@ -76,7 +78,7 @@ export function RegionMap({ map, dots, className }: RegionMapProps) {
           maxZoom={20}
         />
         {dots.map((dot) => {
-          const project = findProject(dot.projectSlug);
+          const project = findProject(projects, dot.projectSlug);
           const icon =
             dot.status === "in-progress" ? ACTIVE_ICON : FINALIZED_ICON;
 

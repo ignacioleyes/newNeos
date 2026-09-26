@@ -1,10 +1,11 @@
-import { regions } from "../../data/regions";
+import { useRegions } from "../../hooks/useContent";
 import { Reveal } from "../ui/Reveal";
 import { RegionMap } from "../ui/RegionMap";
 import { useT, useTr } from "../../i18n/LanguageContext";
 
 export function Regions() {
   const t = useT();
+  const regions = useRegions();
   const tr = useTr();
 
   return (

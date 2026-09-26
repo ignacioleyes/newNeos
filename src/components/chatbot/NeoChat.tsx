@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLang, useT } from "../../i18n/LanguageContext";
+import { useProjects } from "../../hooks/useContent";
 import {
   STEP_CONFIGS,
   validateEmail,
@@ -41,6 +42,7 @@ interface NeoChatProps {
 export function NeoChat({ open, onClose }: NeoChatProps) {
   const t = useT();
   const { lang } = useLang();
+  const projects = useProjects();
   const chat = useChatbot();
 
   const [sending, setSending] = useState(false);
@@ -159,7 +161,7 @@ export function NeoChat({ open, onClose }: NeoChatProps) {
       }
 
       case "project_cards": {
-        const list = getProjectsForRegion(data.region, lang);
+        const list = getProjectsForRegion(projects, data.region, lang);
         const s = t.neo.steps.show_projects;
         return (
           <NeoProjectCards
@@ -174,7 +176,7 @@ export function NeoChat({ open, onClose }: NeoChatProps) {
       }
 
       case "summary": {
-        const projectName = getProjectName(data.projectSlug);
+        const projectName = getProjectName(projects, data.projectSlug);
         const items = buildSummaryItems(data, t, projectName);
         const c = t.neo.steps.confirm;
         return (

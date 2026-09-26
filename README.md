@@ -16,15 +16,30 @@ yarn         # instalar dependencias
 yarn start   # dev server (http://localhost:5173)
 yarn build   # build de producción
 yarn preview # preview del build
+yarn snapshot # regenera el snapshot de contenido desde Supabase (ver § Contenido)
 yarn lint    # ESLint
 ```
+
+## Contenido
+
+El contenido de la landing (proyectos y regiones) vive en **Supabase**, no en el
+código — NEOS lo administra desde un panel. Ver [`supabase/README.md`](./supabase/README.md).
+
+`src/data/content.snapshot.ts` es una copia generada de ese contenido. La app la
+usa como `placeholderData`: la home pinta instantánea con el último snapshot y
+se actualiza sola cuando responde la base. También es la red de seguridad si
+Supabase está caído o pausado.
+
+**Hay que correr `yarn snapshot` antes de cada deploy**, o el sitio se publica
+con el contenido de la última vez que alguien lo corrió. No está enganchado al
+`build` a propósito: un build no debería fallar por un problema de red.
 
 ## Rutas
 
 | Ruta | Vista |
 |---|---|
 | `/` | Home (hero, métricas, proyectos, nosotros, regiones, brochure CTA, contacto) |
-| `/proyectos/:slug` | Detalle por proyecto (Neweken completo, resto "próximamente") |
+| `/proyectos/:slug` | Detalle por proyecto (Chaquíes y Neweken completos, resto "próximamente") |
 
 ## Estructura
 
