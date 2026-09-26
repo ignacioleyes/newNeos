@@ -39,15 +39,16 @@ con el contenido de la última vez que alguien lo corrió. No está enganchado a
 | Ruta | Vista |
 |---|---|
 | `/` | Home (hero, métricas, proyectos, nosotros, regiones, brochure CTA, contacto) |
-| `/proyectos/:slug` | Detalle por proyecto (Chaquíes y Neweken completos, resto "próximamente") |
+| `/proyectos/:slug` | Detalle por proyecto, armado con las secciones que tenga cargadas (sin secciones → "próximamente") |
 
 ## Estructura
 
 ```
 src/
 ├── App.tsx                  # Router + layout compartido
-├── pages/                   # Home, ProjectDetail, ProjectNeweken, ProjectComingSoon
+├── pages/                   # Home, ProjectDetail, ProjectComingSoon
 ├── components/
+│   ├── project/             # ProjectTemplate — renderer de las secciones de detalle
 │   ├── layout/              # Topbar, Footer, WhatsAppFab, ScrollManager
 │   ├── sections/            # Hero, Pillars, Projects, About, Regions, BrochureCTA, Contact
 │   └── ui/                  # NeosLogo, NeosMark, TopoPattern, Reveal, CountUp, HeroImageCarousel, WhatsAppIcon

@@ -1,8 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchContent, type Content } from "../lib/contentService";
-import { projectsSnapshot, regionsSnapshot } from "../data/content.snapshot";
+import {
+  projectsSnapshot,
+  regionsSnapshot,
+  sectionsSnapshot,
+} from "../data/content.snapshot";
 import type { Project } from "../data/projects";
 import type { Region } from "../data/regions";
+import type { ProjectSection } from "../lib/sections";
 import { GRID_CAPACITY } from "../lib/presentation";
 
 /**
@@ -20,6 +25,7 @@ import { GRID_CAPACITY } from "../lib/presentation";
 const SNAPSHOT: Content = {
   projects: projectsSnapshot,
   regions: regionsSnapshot,
+  sectionsByProject: sectionsSnapshot,
 };
 
 export const CONTENT_QUERY_KEY = ["content"] as const;
@@ -73,4 +79,10 @@ export function useProjectsSplit(): { grid: Project[]; rest: Project[] } {
     grid: ordered.slice(0, GRID_CAPACITY),
     rest: ordered.slice(GRID_CAPACITY),
   };
+}
+
+/** Las secciones de la página de detalle de un proyecto, ya ordenadas. */
+export function useProjectSections(slug: string | undefined): ProjectSection[] {
+  const { sectionsByProject } = useContent();
+  return slug ? sectionsByProject[slug] ?? [] : [];
 }

@@ -1,6 +1,7 @@
 import { projectGradient, regionGradient, statusLabel } from "./presentation";
 import type { Project, ProjectStatus } from "../data/projects";
 import type { Region, MapDot } from "../data/regions";
+import type { ProjectSection, SectionKind } from "./sections";
 
 /**
  * Mapea las filas de Supabase a los tipos que
@@ -61,6 +62,8 @@ export interface RegionRow {
 export interface Content {
   projects: Project[];
   regions: Region[];
+  /** Secciones de detalle, indexadas por slug de proyecto. */
+  sectionsByProject: Record<string, ProjectSection[]>;
 }
 
 // -----------------------------------------------------------------------------
@@ -147,3 +150,43 @@ export function mapRegions(rows: RegionRow[], projects: Project[]): Region[] {
     });
 }
 
+
+// -----------------------------------------------------------------------------
+// Secciones de las páginas de detalle
+// -----------------------------------------------------------------------------
+
+export interface SectionRow {
+  id: string;
+  project_id: string;
+  kind: string;
+  position: number;
+  is_visible: boolean;
+  data: unknown;
+  projects: { slug: string } | null;
+}
+
+/**
+ * Agrupa las secciones por slug de proyecto.
+ *
+ * Vienen en la misma query que los proyectos (una sola ida al servidor) y por
+ * eso el snapshot también cubre las páginas de detalle: un deep link pinta
+ * instantáneo en vez de mostrar un skeleton.
+ */
+export function mapSections(rows: SectionRow[]): Record<string, ProjectSection[]> {
+  const bySlug: Record<string, ProjectSection[]> = {};
+  for (const r of rows) {
+    const slug = r.projects?.slug;
+    if (!slug) continue;
+    (bySlug[slug] ??= []).push({
+      id: r.id,
+      kind: r.kind as SectionKind,
+      position: r.position,
+      isVisible: r.is_visible,
+      data: r.data,
+    });
+  }
+  for (const list of Object.values(bySlug)) {
+    list.sort((a, b) => a.position - b.position);
+  }
+  return bySlug;
+}

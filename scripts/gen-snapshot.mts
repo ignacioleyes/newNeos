@@ -29,8 +29,10 @@ import { createClient } from "@supabase/supabase-js";
 import {
   mapProjects,
   mapRegions,
+  mapSections,
   type ProjectRow,
   type RegionRow,
+  type SectionRow,
 } from "../src/lib/contentMapping.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -66,9 +68,10 @@ if (!url || !key) {
 
 const supabase = createClient(url, key, { auth: { persistSession: false } });
 
-const [projectsRes, regionsRes] = await Promise.all([
+const [projectsRes, regionsRes, sectionsRes] = await Promise.all([
   supabase.from("projects").select("*").order("display_order"),
   supabase.from("regions").select("*").order("display_order"),
+  supabase.from("project_sections").select("*, projects!inner(slug)").order("position"),
 ]);
 
 if (projectsRes.error) {
@@ -77,6 +80,10 @@ if (projectsRes.error) {
 }
 if (regionsRes.error) {
   console.error("Error trayendo regions:", regionsRes.error.message);
+  process.exit(1);
+}
+if (sectionsRes.error) {
+  console.error("Error trayendo project_sections:", sectionsRes.error.message);
   process.exit(1);
 }
 
@@ -96,6 +103,9 @@ if (projectRows.length === 0) {
 
 const projects = mapProjects(projectRows, regionRows);
 const regions = mapRegions(regionRows, projects);
+const sectionsByProject = mapSections(
+  (sectionsRes.data ?? []) as unknown as SectionRow[]
+);
 
 const banner = `// ARCHIVO GENERADO — no editar a mano.
 // Se regenera con \`yarn snapshot\` desde Supabase.
@@ -105,11 +115,18 @@ const banner = `// ARCHIVO GENERADO — no editar a mano.
 
 const body = `${banner}
 import type { Project } from "./projects";
+import type { ProjectSection } from "../lib/sections";
 import type { Region } from "./regions";
 
 export const projectsSnapshot: Project[] = ${JSON.stringify(projects, null, 2)};
 
 export const regionsSnapshot: Region[] = ${JSON.stringify(regions, null, 2)};
+
+export const sectionsSnapshot: Record<string, ProjectSection[]> = ${JSON.stringify(
+  sectionsByProject,
+  null,
+  2
+)};
 `;
 
 mkdirSync(dirname(OUT), { recursive: true });
@@ -117,4 +134,9 @@ writeFileSync(OUT, body, "utf8");
 
 console.log(`snapshot regenerado: ${projects.length} proyectos, ${regions.length} regiones`);
 console.log(`  destacado: ${projects.find((p) => p.isFeatured)?.slug ?? "(ninguno)"}`);
+console.log(
+  `  secciones: ${Object.entries(sectionsByProject)
+    .map(([s, l]) => `${s}(${l.length})`)
+    .join(", ") || "(ninguna)"}`
+);
 console.log(`  -> ${OUT}`);
