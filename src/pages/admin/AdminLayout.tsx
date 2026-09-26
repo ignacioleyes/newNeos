@@ -61,6 +61,11 @@ export function AdminLayout() {
                 Panel
               </span>
             </Link>
+            <nav className="hidden sm:flex items-center gap-4 text-sm">
+              <Link to="/admin/proyectos" className="opacity-70 hover:opacity-100 hover:text-primary transition-colors">
+                Proyectos
+              </Link>
+            </nav>
           </div>
 
           <div className="flex items-center gap-4 text-sm">

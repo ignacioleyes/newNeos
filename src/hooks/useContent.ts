@@ -46,7 +46,19 @@ export function useContent(): Content {
   return data ?? SNAPSHOT;
 }
 
+/**
+ * Los proyectos que ve el público.
+ *
+ * Un empleado logueado recibe también los despublicados, porque la RLS se los
+ * permite. Sin este filtro, navegar la landing con sesión abierta mostraría los
+ * borradores mezclados con lo publicado.
+ */
 export function useProjects(): Project[] {
+  return useContent().projects.filter((p) => p.isPublished);
+}
+
+/** Todos los proyectos, incluidos los despublicados. Para el panel. */
+export function useAllProjects(): Project[] {
   return useContent().projects;
 }
 
@@ -54,8 +66,13 @@ export function useRegions(): Region[] {
   return useContent().regions;
 }
 
+/**
+ * Busca entre TODOS, no sólo los publicados: así un empleado puede previsualizar
+ * la página de un borrador entrando por URL. Para el público no cambia nada,
+ * porque la RLS nunca le devuelve los despublicados.
+ */
 export function useProject(slug: string | undefined): Project | undefined {
-  return useProjects().find((p) => p.slug === slug);
+  return useAllProjects().find((p) => p.slug === slug);
 }
 
 /**

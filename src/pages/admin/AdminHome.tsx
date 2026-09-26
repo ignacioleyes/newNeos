@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import { useProjects } from "../../hooks/useContent";
 
@@ -46,9 +47,12 @@ export function AdminHome() {
         </div>
       </div>
 
-      <div className="mt-10 rounded-2xl border border-dashed border-base-300 p-6 max-w-3xl">
-        <p className="text-sm opacity-60 leading-relaxed">
-          Próximamente: edición de proyectos, orden de la grilla, mapa para las
+      <div className="mt-10 max-w-3xl">
+        <Link to="/admin/proyectos" className="btn btn-primary rounded-full px-6">
+          Administrar proyectos →
+        </Link>
+        <p className="mt-6 text-sm opacity-50 leading-relaxed">
+          Próximamente: edición de los campos de cada proyecto, mapa para las
           coordenadas y el editor de secciones de las páginas de detalle.
         </p>
       </div>

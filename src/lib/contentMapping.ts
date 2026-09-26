@@ -44,6 +44,7 @@ export interface ProjectRow {
   lng: number | null;
   display_order: number;
   is_featured: boolean;
+  is_published: boolean;
 }
 
 export interface RegionRow {
@@ -110,6 +111,7 @@ export function mapProjects(rows: ProjectRow[], regionRows: RegionRow[]): Projec
       lng: opt(r.lng),
       displayOrder: r.display_order,
       isFeatured: r.is_featured,
+      isPublished: r.is_published,
     }));
 }
 
@@ -122,7 +124,11 @@ export function mapRegions(rows: RegionRow[], projects: Project[]): Region[] {
   return [...rows]
     .sort((a, b) => a.display_order - b.display_order)
     .map((r) => {
-      const own = projects.filter((p) => p.regionSlug === r.slug);
+      // Sólo lo publicado: el conteo y los dots son lo que ve el público,
+      // aunque un empleado logueado reciba además los borradores.
+      const own = projects.filter(
+        (p) => p.regionSlug === r.slug && p.isPublished
+      );
       const dots: MapDot[] = own
         .filter((p) => p.lat != null && p.lng != null)
         .map((p) => ({

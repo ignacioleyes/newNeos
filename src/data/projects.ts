@@ -46,6 +46,11 @@ export interface Project {
   displayOrder: number;
   /** El que ocupa el card grande 2x2. Sólo puede haber uno. */
   isFeatured: boolean;
+  /**
+   * Un empleado logueado recibe también los despublicados (la RLS se los
+   * permite), así que la landing filtra por este campo y el panel no.
+   */
+  isPublished: boolean;
 }
 
 /**

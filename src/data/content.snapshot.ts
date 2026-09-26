@@ -1,7 +1,7 @@
 // ARCHIVO GENERADO — no editar a mano.
 // Se regenera con `yarn snapshot` desde Supabase.
 // Ver scripts/gen-snapshot.mts y la nota en ./projects.ts
-// Generado: 2026-09-26T21:25:31.907Z
+// Generado: 2026-09-26T22:03:18.906Z
 
 import type { Project } from "./projects";
 import type { ProjectSection } from "../lib/sections";
@@ -154,7 +154,8 @@ export const projectsSnapshot: Project[] = [
     "lat": -26.0744,
     "lng": -65.9741,
     "displayOrder": 1,
-    "isFeatured": true
+    "isFeatured": true,
+    "isPublished": true
   },
   {
     "slug": "greet-balcarce",
@@ -212,7 +213,8 @@ export const projectsSnapshot: Project[] = [
     "lat": -24.7821,
     "lng": -65.4106,
     "displayOrder": 2,
-    "isFeatured": false
+    "isFeatured": false,
+    "isPublished": true
   },
   {
     "slug": "mercatus",
@@ -265,7 +267,8 @@ export const projectsSnapshot: Project[] = [
     "lat": -26.0712,
     "lng": -65.9722,
     "displayOrder": 3,
-    "isFeatured": false
+    "isFeatured": false,
+    "isPublished": true
   },
   {
     "slug": "neweken",
@@ -324,7 +327,8 @@ export const projectsSnapshot: Project[] = [
     "lat": -38.3556,
     "lng": -68.7864,
     "displayOrder": 4,
-    "isFeatured": false
+    "isFeatured": false,
+    "isPublished": true
   },
   {
     "slug": "el-cauce-castellanos",
@@ -444,7 +448,8 @@ export const projectsSnapshot: Project[] = [
     "lat": -24.7178,
     "lng": -65.5022,
     "displayOrder": 5,
-    "isFeatured": false
+    "isFeatured": false,
+    "isPublished": true
   }
 ];
 
