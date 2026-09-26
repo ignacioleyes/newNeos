@@ -73,13 +73,17 @@ El free tier pausa los proyectos después de **~7 días sin actividad**, y un pr
 
 La defensa es [`.github/workflows/supabase-keepalive.yml`](../.github/workflows/supabase-keepalive.yml): **lunes y jueves 12:00 UTC** le pega a `public.ping()` vía PostgREST. Gaps de 3 y 4 días, así que si un run falla el siguiente llega a tiempo.
 
-**Setup (una sola vez):**
+> ✅ **Activo desde 2026-09-26.** Primer run verificado en verde. Los pasos de abajo son para cuando haya que rearmarlo en un proyecto nuevo.
 
-1. ~~Correr la migración `20260925150000_add_ping_function.sql`~~ — ✅ ya aplicada vía `yarn db:push`
+**Setup (una sola vez, por proyecto):**
+
+1. Aplicar la migración que crea `ping()` — entra con `yarn db:push`
 2. Repo → Settings → Secrets and variables → Actions → agregar:
-   - `SUPABASE_URL` → `https://ecmlccnxzgajozsrnbjn.supabase.co`
+   - `SUPABASE_URL` → la URL del proyecto (hoy `https://ecmlccnxzgajozsrnbjn.supabase.co`)
    - `SUPABASE_ANON_KEY` → la publishable key
-3. Actions → *Supabase keepalive* → **Run workflow** para verificar que da verde
+3. Actions → *Supabase keepalive* → **Run workflow**, para verificar que da verde sin esperar al lunes
+
+Los secrets van en **GitHub**, no en Supabase: el workflow corre en los servidores de GitHub y no tiene acceso a `.env.local`.
 
 ### Dos límites que hay que tener presentes
 
