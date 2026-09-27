@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "snapshot": "tsx scripts/gen-snapshot.mts",
+    "migrate:images": "tsx scripts/migrate-images-to-storage.mts",
     "db:push": "supabase db push",
     "db:status": "supabase migration list",
     "db:diff": "supabase db diff --schema public"
