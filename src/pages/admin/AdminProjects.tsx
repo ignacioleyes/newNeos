@@ -42,23 +42,19 @@ const ACTION_BTN =
  * `--tt-bg` sobreescribe el fondo por defecto (`neutral`, casi igual al de la
  * fila) por `base-300`, que sí se despega.
  *
+ * Todos van arriba. El de la última acción se probó a la izquierda, pensando
+ * que arriba se cortaría contra el borde: no se corta (el contenedor tiene
+ * padding de sobra) y en cambio se superponía con los otros botones.
+ *
  * Ojo: el tooltip de daisyUI es CSS puro (contenido en un pseudo-elemento), y
  * los lectores de pantalla no lo anuncian. Por eso los botones que son sólo un
  * ícono llevan además `aria-label`.
  */
-function Tip({
-  text,
-  position = "tooltip-top",
-  children,
-}: {
-  text?: string;
-  position?: "tooltip-top" | "tooltip-left" | "tooltip-bottom" | "tooltip-right";
-  children: ReactNode;
-}) {
+function Tip({ text, children }: { text?: string; children: ReactNode }) {
   if (!text) return <>{children}</>;
   return (
     <span
-      className={`tooltip ${position} [--tt-bg:var(--color-base-300)]`}
+      className="tooltip tooltip-top [--tt-bg:var(--color-base-300)]"
       data-tip={text}
     >
       {children}
@@ -250,7 +246,7 @@ export function AdminProjects() {
 
                 {/* Abre en otra pestaña: la flecha se va en diagonal, hacia
                     donde apunta. */}
-                <Tip text="Ver en la landing" position="tooltip-left">
+                <Tip text="Ver en la landing">
                   <Link
                     to={`/proyectos/${p.slug}`}
                     target="_blank"
