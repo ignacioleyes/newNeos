@@ -39,6 +39,8 @@ export interface Project {
 
   /** Slug de la región (la FK real). `region` queda como el nombre visible. */
   regionSlug: string;
+  /** La key del preset visual, no las clases. El panel edita esto. */
+  gradientKey: string;
   /** Coordenadas del dot en el mapa de su región. Van juntas o no van. */
   lat?: number;
   lng?: number;

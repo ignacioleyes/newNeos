@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../lib/supabase";
 import { CONTENT_QUERY_KEY } from "./useContent";
+import type { Localized } from "../i18n/types";
 
 /**
  * Mutaciones del panel sobre proyectos.
@@ -62,6 +63,59 @@ export function useReorderProjects() {
     mutationFn: async (slugsInOrder: string[]) => {
       const { error } = await supabase.rpc("reorder_projects", { p_slugs: slugsInOrder });
       if (error) throw error;
+    },
+    onSuccess: invalidate,
+  });
+}
+
+/**
+ * Guarda los campos editables de un proyecto.
+ *
+ * No toca is_published, is_featured ni display_order: esos se manejan desde el
+ * listado, donde el efecto sobre la grilla se ve en contexto. Tampoco toca el
+ * slug — ver la nota en AdminProjectEdit.
+ */
+export interface ProjectPatch {
+  name: string;
+  hashtag: string | null;
+  tagline: Localized<string>;
+  description: Localized<string>;
+  about: Localized<string> | null;
+  location: Localized<string>;
+  region_slug: string;
+  status: string;
+  units: Localized<string> | null;
+  tipologias: Localized<string> | null;
+  investment: Localized<string> | null;
+  highlights: Localized<string[]>;
+  hero_image: string;
+  logo: string | null;
+  brochure_url: string | null;
+  progress_url: string | null;
+  video_embed: string | null;
+  maps_url: string | null;
+  gradient_key: string;
+  lat: number | null;
+  lng: number | null;
+}
+
+export function useUpdateProject() {
+  const invalidate = useInvalidateContent();
+  return useMutation({
+    mutationFn: async ({ slug, patch }: { slug: string; patch: ProjectPatch }) => {
+      const { data, error } = await supabase
+        .from("projects")
+        .update(patch)
+        .eq("slug", slug)
+        .select("slug");
+
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error(
+          "No se pudo guardar: la base no dejó modificar este proyecto. Puede ser un problema de permisos."
+        );
+      }
+      return data;
     },
     onSuccess: invalidate,
   });

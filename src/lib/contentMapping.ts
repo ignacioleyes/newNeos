@@ -107,6 +107,7 @@ export function mapProjects(rows: ProjectRow[], regionRows: RegionRow[]): Projec
       videoEmbed: opt(r.video_embed),
       mapsUrl: opt(r.maps_url),
       gradient: projectGradient(r.gradient_key),
+      gradientKey: r.gradient_key,
       lat: opt(r.lat),
       lng: opt(r.lng),
       displayOrder: r.display_order,

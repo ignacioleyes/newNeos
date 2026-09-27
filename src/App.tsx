@@ -9,6 +9,7 @@ import { AdminLogin } from "./pages/admin/AdminLogin";
 import { AdminLayout } from "./pages/admin/AdminLayout";
 import { AdminHome } from "./pages/admin/AdminHome";
 import { AdminProjects } from "./pages/admin/AdminProjects";
+import { AdminProjectEdit } from "./pages/admin/AdminProjectEdit";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AuthProvider } from "./auth/AuthContext";
 
@@ -45,6 +46,7 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminHome />} />
               <Route path="proyectos" element={<AdminProjects />} />
+              <Route path="proyectos/:slug" element={<AdminProjectEdit />} />
             </Route>
           </Routes>
         </BrowserRouter>

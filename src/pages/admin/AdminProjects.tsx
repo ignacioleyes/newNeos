@@ -169,7 +169,12 @@ export function AdminProjects() {
 
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-2 font-medium truncate">
-                  {p.name}
+                  <Link
+                    to={`/admin/proyectos/${p.slug}`}
+                    className="hover:text-primary transition-colors"
+                  >
+                    {p.name}
+                  </Link>
                   {p.isFeatured && (
                     <span className="rounded-full border border-primary/50 px-2 py-0.5 text-[9px] uppercase tracking-widest text-primary">
                       Destacado
