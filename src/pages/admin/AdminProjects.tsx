@@ -10,6 +10,28 @@ import { GRID_CAPACITY } from "../../lib/presentation";
 import { useTr } from "../../i18n/LanguageContext";
 
 /**
+ * Clases base de los botones de acción.
+ *
+ * El hover de cada acción señala QUÉ hace, no sólo que es clickeable: las
+ * flechas de orden se mueven en la dirección del cambio, la estrella crece,
+ * y publicar/despublicar se distinguen por color.
+ *
+ * Los desplazamientos van bajo `motion-safe:`, así que no se aplican si el
+ * sistema pide movimiento reducido. El cambio de color sí queda siempre: es
+ * la señal, el movimiento es el condimento.
+ *
+ * `enabled:` importa — sin eso un botón deshabilitado igual reacciona al
+ * hover y promete algo que no va a pasar.
+ */
+const ORDER_BTN =
+  "btn btn-ghost btn-xs px-2 transition-all duration-200 disabled:opacity-20 " +
+  "enabled:hover:text-primary enabled:hover:bg-primary/10";
+
+const ACTION_BTN =
+  "btn btn-ghost btn-sm rounded-full border border-base-content/20 " +
+  "transition-all duration-200 disabled:opacity-30";
+
+/**
  * Listado de proyectos del panel.
  *
  * El orden de esta lista ES el orden de la grilla de la home: los primeros
@@ -84,14 +106,16 @@ export function AdminProjects() {
                 p.isFeatured ? "border-primary/60" : "border-base-300/60"
               } ${p.isPublished ? "" : "opacity-55"}`}
             >
-              {/* Reordenar */}
+              {/* Reordenar. El hover empuja la flecha en la dirección del
+                  movimiento: la de subir se va hacia arriba. Es affordance,
+                  no decoración — antes de hacer click ya sabés qué va a pasar. */}
               <div className="flex flex-col">
                 <button
                   type="button"
                   aria-label={`Subir ${p.name}`}
                   disabled={idx === 0 || busy}
                   onClick={() => move(idx, -1)}
-                  className="btn btn-ghost btn-xs px-2 disabled:opacity-20"
+                  className={`${ORDER_BTN} motion-safe:enabled:hover:-translate-y-0.5`}
                 >
                   ▲
                 </button>
@@ -100,7 +124,7 @@ export function AdminProjects() {
                   aria-label={`Bajar ${p.name}`}
                   disabled={idx === ordered.length - 1 || busy}
                   onClick={() => move(idx, 1)}
-                  className="btn btn-ghost btn-xs px-2 disabled:opacity-20"
+                  className={`${ORDER_BTN} motion-safe:enabled:hover:translate-y-0.5`}
                 >
                   ▼
                 </button>
@@ -132,7 +156,8 @@ export function AdminProjects() {
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                {/* Destacar: sólo tiene sentido si está publicado */}
+                {/* Destacar. La estrella crece y se pinta: previsualiza el
+                    estado en el que va a quedar. */}
                 <button
                   type="button"
                   disabled={p.isFeatured || busy || !p.isPublished}
@@ -142,11 +167,15 @@ export function AdminProjects() {
                       : "Poner como destacado"
                   }
                   onClick={() => run(setFeatured.mutateAsync(p.slug))}
-                  className="btn btn-ghost btn-sm rounded-full border border-base-content/20 disabled:opacity-30"
+                  className={`${ACTION_BTN} text-base leading-none enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10 motion-safe:enabled:hover:scale-110`}
                 >
                   ★
                 </button>
 
+                {/* Publicar y despublicar son la misma acción con signo
+                    opuesto, así que el hover las distingue por color: rosa
+                    suma a la landing, ámbar la saca. Ámbar y no rojo porque es
+                    reversible — no se borra nada. */}
                 <button
                   type="button"
                   disabled={busy || (p.isFeatured && p.isPublished)}
@@ -163,16 +192,22 @@ export function AdminProjects() {
                       })
                     )
                   }
-                  className="btn btn-ghost btn-sm rounded-full border border-base-content/20 disabled:opacity-30"
+                  className={`${ACTION_BTN} ${
+                    p.isPublished
+                      ? "enabled:hover:text-warning enabled:hover:border-warning enabled:hover:bg-warning/10"
+                      : "enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10"
+                  }`}
                 >
                   {p.isPublished ? "Despublicar" : "Publicar"}
                 </button>
 
+                {/* Abre en otra pestaña: la flecha se va en diagonal, hacia
+                    donde apunta. */}
                 <Link
                   to={`/proyectos/${p.slug}`}
                   target="_blank"
-                  className="btn btn-ghost btn-sm rounded-full border border-base-content/20"
                   title="Ver en la landing"
+                  className={`${ACTION_BTN} text-base leading-none hover:text-primary hover:border-primary hover:bg-primary/10 motion-safe:hover:-translate-y-0.5 motion-safe:hover:translate-x-0.5`}
                 >
                   ↗
                 </Link>
