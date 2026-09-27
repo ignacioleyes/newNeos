@@ -1,7 +1,7 @@
 // ARCHIVO GENERADO — no editar a mano.
 // Se regenera con `yarn snapshot` desde Supabase.
 // Ver scripts/gen-snapshot.mts y la nota en ./projects.ts
-// Generado: 2026-09-27T01:43:21.969Z
+// Generado: 2026-09-27T12:28:41.594Z
 
 import type { Project } from "./projects";
 import type { ProjectSection } from "../lib/sections";
@@ -59,8 +59,8 @@ export const projectsSnapshot: Project[] = [
         "Gestión 100% NEOS"
       ]
     },
-    "heroImage": "/projects/neweken/hero.png",
-    "logo": "/projects/neweken/logo.png",
+    "heroImage": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/hero.png",
+    "logo": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/logo.png",
     "gradient": "from-emerald-600/40 via-teal-700/30 to-zinc-900",
     "gradientKey": "emerald",
     "lat": -38.3556,
@@ -113,8 +113,8 @@ export const projectsSnapshot: Project[] = [
         "Polo gastronómico y cultural"
       ]
     },
-    "heroImage": "/projects/mercatus/hero.png",
-    "logo": "/projects/mercatus/logo.png",
+    "heroImage": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/mercatus/hero.png",
+    "logo": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/mercatus/logo.png",
     "videoEmbed": "https://www.youtube.com/embed/z3i6-MpZCEc",
     "gradient": "from-orange-500/40 via-amber-700/30 to-zinc-900",
     "gradientKey": "orange",
@@ -172,8 +172,8 @@ export const projectsSnapshot: Project[] = [
         "Zona en crecimiento"
       ]
     },
-    "heroImage": "/projects/greet-balcarce/hero.webp",
-    "logo": "/projects/greet-balcarce/logo.png",
+    "heroImage": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/greet-balcarce/hero.webp",
+    "logo": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/greet-balcarce/logo.png",
     "progressUrl": "https://www.youtube.com/playlist?list=PLMQAokpPK0kLDMaSxnXC5BPuYReZe6OPN",
     "mapsUrl": "https://www.google.com/maps/place/24%C2%B046'16.9%22S+65%C2%B024'38.5%22W/@-24.771357,-65.410695,3947m/data=!3m1!1e3!4m4!3m3!8m2!3d-24.7713573!4d-65.4106948",
     "gradient": "from-pink-500/40 via-fuchsia-600/30 to-zinc-900",
@@ -324,8 +324,8 @@ export const projectsSnapshot: Project[] = [
         "A 300 m de la plaza"
       ]
     },
-    "heroImage": "/projects/chaquies/newHero.jpg",
-    "logo": "/projects/chaquies/logo.png",
+    "heroImage": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/newHero.jpg",
+    "logo": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/logo.png",
     "gradient": "from-amber-600/40 via-rose-700/30 to-zinc-900",
     "gradientKey": "amber",
     "lat": -26.0744,
@@ -446,8 +446,8 @@ export const projectsSnapshot: Project[] = [
         "Barrio privado"
       ]
     },
-    "heroImage": "/projects/el-cauce-castellanos/hero.webp",
-    "logo": "/projects/el-cauce-castellanos/logo.png",
+    "heroImage": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/el-cauce-castellanos/hero.webp",
+    "logo": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/el-cauce-castellanos/logo.png",
     "gradient": "from-sky-600/40 via-emerald-700/30 to-zinc-900",
     "gradientKey": "sky",
     "lat": -24.7178,
@@ -576,19 +576,19 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
         "images": [
           {
             "alt": "Chaquíes — vineyards & mountains",
-            "src": "/projects/chaquies/newHero.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/newHero.jpg"
           },
           {
             "alt": "SUM exterior",
-            "src": "/projects/chaquies/sum-exterior.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/sum-exterior.jpg"
           },
           {
             "alt": "Kids zone",
-            "src": "/projects/chaquies/kids-zone.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/kids-zone.jpg"
           },
           {
             "alt": "Indoor heated pool",
-            "src": "/projects/chaquies/piscina-cubierta.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/piscina-cubierta.jpg"
           }
         ],
         "ctaHref": "#amenities",
@@ -635,7 +635,7 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
             "A 300 metros de la plaza principal, conjuga ubicación privilegiada, escala arquitectónica y un programa de servicios que define un nuevo estándar para Cafayate."
           ]
         },
-        "image": "/projects/chaquies/sum-exterior.jpg",
+        "image": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/sum-exterior.jpg",
         "title": {
           "en": "Over [20,000 m²] of development in the heart of Cafayate.",
           "es": "Más de [20.000 m²] de desarrollo en el corazón de Cafayate."
@@ -760,7 +760,7 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
         },
         "images": [
           {
-            "src": "/projects/chaquies/fachada.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/fachada.jpg",
             "wide": true,
             "label": {
               "en": "Facade · front view",
@@ -768,21 +768,21 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
             }
           },
           {
-            "src": "/projects/chaquies/sum-interior.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/sum-interior.jpg",
             "label": {
               "en": "SUM · interior",
               "es": "SUM · interior"
             }
           },
           {
-            "src": "/projects/chaquies/piscina-cubierta.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/piscina-cubierta.jpg",
             "label": {
               "en": "Indoor heated pool",
               "es": "Piscina interior climatizada"
             }
           },
           {
-            "src": "/projects/chaquies/obra-avance.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/chaquies/obra-avance.jpg",
             "wide": true,
             "label": {
               "en": "Construction progress",
@@ -868,19 +868,19 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
         "images": [
           {
             "alt": "Neweken entrance",
-            "src": "/projects/neweken/hero.png"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/hero.png"
           },
           {
             "alt": "Panoramic view",
-            "src": "/projects/neweken/aerial-2.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/aerial-2.jpg"
           },
           {
             "alt": "Aerial view",
-            "src": "/projects/neweken/aerial-1.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/aerial-1.jpg"
           },
           {
             "alt": "Construction progress",
-            "src": "/projects/neweken/construction.jpg"
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/construction.jpg"
           }
         ],
         "ctaHref": "#avance-de-obra",
@@ -927,7 +927,7 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
             "Más de 100 departamentos totalmente equipados, contratos con empresas petroleras multinacionales y un modelo de gestión 100% administrado por NEOS. Vos invertís en un activo productivo, NEOS gestiona, vos percibís la renta."
           ]
         },
-        "image": "/projects/neweken/aerial-1.jpg",
+        "image": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/aerial-1.jpg",
         "title": {
           "en": "A project designed to turn [energy growth] into real-estate income.",
           "es": "Un proyecto pensado para transformar el [crecimiento energético] en renta inmobiliaria real."
@@ -1047,7 +1047,7 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
       "position": 5,
       "isVisible": true,
       "data": {
-        "image": "/projects/neweken/render.jpg",
+        "image": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/render.jpg",
         "title": {
           "en": "6 stages. [4 delivered, 2 under construction.]",
           "es": "6 etapas. [4 entregadas, 2 en obra.]"
@@ -1120,21 +1120,21 @@ export const sectionsSnapshot: Record<string, ProjectSection[]> = {
         },
         "images": [
           {
-            "src": "/projects/neweken/aerial-2.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/aerial-2.jpg",
             "label": {
               "en": "Panoramic view of the complex",
               "es": "Vista panorámica del complejo"
             }
           },
           {
-            "src": "/projects/neweken/construction.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/construction.jpg",
             "label": {
               "en": "Construction progress",
               "es": "Avance constructivo"
             }
           },
           {
-            "src": "/projects/neweken/aerial-1.jpg",
+            "src": "https://ecmlccnxzgajozsrnbjn.supabase.co/storage/v1/object/public/project-images/neweken/aerial-1.jpg",
             "wide": true,
             "label": {
               "en": "Top view of the master plan",
