@@ -1,7 +1,7 @@
 // ARCHIVO GENERADO — no editar a mano.
 // Se regenera con `yarn snapshot` desde Supabase.
 // Ver scripts/gen-snapshot.mts y la nota en ./projects.ts
-// Generado: 2026-09-27T12:28:41.594Z
+// Generado: 2026-09-27T13:44:31.979Z
 
 import type { Project } from "./projects";
 import type { ProjectSection } from "../lib/sections";
@@ -9,6 +9,7 @@ import type { Region } from "./regions";
 
 export const projectsSnapshot: Project[] = [
   {
+    "id": "b9b83c2b-dbfc-47a2-ab30-a459b11cffdd",
     "slug": "neweken",
     "name": "Neweken",
     "tagline": {
@@ -70,6 +71,7 @@ export const projectsSnapshot: Project[] = [
     "isPublished": true
   },
   {
+    "id": "5c83118f-b43b-4a4e-8861-c206dd6bcdee",
     "slug": "mercatus",
     "name": "Mercatus",
     "hashtag": "#mercatus",
@@ -78,8 +80,8 @@ export const projectsSnapshot: Project[] = [
       "es": "Un nuevo lugar para encontrarse en Cafayate."
     },
     "description": {
-      "en": "Mercatus isn't just a market — it's a destination. Cafayate's first commercial market, designed to discover, enjoy and connect with the best of the region.",
-      "es": "Mercatus no es solo un mercado, es un destino. El primer mercado comercial de Cafayate — un lugar pensado para descubrir, disfrutar y conectar con lo mejor de la región."
+      "en": "Mercatus isn't just a market. It's a destination. Cafayate's first commercial market, designed to discover, enjoy and connect with the best of the region.",
+      "es": "Mercatus no es solo un mercado, es un destino. El primer mercado comercial de Cafayate. Un lugar pensado para descubrir, disfrutar y conectar con lo mejor de la región."
     },
     "about": {
       "en": "A retail walk, a new gathering spot, a great experience.",
@@ -125,6 +127,7 @@ export const projectsSnapshot: Project[] = [
     "isPublished": true
   },
   {
+    "id": "7e05848c-8e08-4da5-8837-35a68f25f0ef",
     "slug": "greet-balcarce",
     "name": "Greet Balcarce",
     "hashtag": "#stayinsalta",
@@ -185,6 +188,7 @@ export const projectsSnapshot: Project[] = [
     "isPublished": true
   },
   {
+    "id": "335ef832-7888-4b47-a9ab-101d5344568b",
     "slug": "chaquies",
     "name": "Chaquíes",
     "hashtag": "#stayincafayate",
@@ -335,6 +339,7 @@ export const projectsSnapshot: Project[] = [
     "isPublished": true
   },
   {
+    "id": "7c883506-0661-4f9b-92c9-3ecac601f4e6",
     "slug": "el-cauce-castellanos",
     "name": "El Cauce Castellanos",
     "hashtag": "#elcauce",

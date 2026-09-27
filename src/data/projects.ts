@@ -13,6 +13,8 @@ export interface Amenity {
 }
 
 export interface Project {
+  /** PK. La usa el panel para insertar secciones; la landing no la necesita. */
+  id: string;
   slug: string;
   name: string;
   hashtag?: string;

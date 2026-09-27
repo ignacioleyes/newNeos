@@ -251,6 +251,16 @@ export function AdminProjects() {
 
                 {/* Abre en otra pestaña: la flecha se va en diagonal, hacia
                     donde apunta. */}
+                <Tip text="Editar las secciones de la página">
+                  <Link
+                    to={`/admin/proyectos/${p.slug}/secciones`}
+                    aria-label={`Secciones de ${p.name}`}
+                    className={`${ACTION_BTN} text-base leading-none hover:text-primary hover:border-primary hover:bg-primary/10`}
+                  >
+                    ☰
+                  </Link>
+                </Tip>
+
                 <Tip text="Ver en la landing">
                   <Link
                     to={`/proyectos/${p.slug}`}

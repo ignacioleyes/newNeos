@@ -188,6 +188,19 @@ export function AdminProjectEdit() {
           /proyectos/{project.slug}
           {!project.isPublished && " · borrador"}
         </p>
+
+        <Link
+          to={`/admin/proyectos/${project.slug}/secciones`}
+          className="mt-4 inline-flex items-center gap-2 rounded-full border border-base-content/20 px-4 py-2 text-sm hover:border-primary hover:text-primary transition-colors"
+        >
+          Editar las secciones de la página
+          <span className="text-xs opacity-60">
+            {sections.length === 0
+              ? "sin secciones"
+              : `${sections.length} ${sections.length === 1 ? "sección" : "secciones"}`}
+          </span>
+          →
+        </Link>
       </div>
 
       {error && (

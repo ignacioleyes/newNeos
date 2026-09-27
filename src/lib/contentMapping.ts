@@ -18,6 +18,7 @@ import type { ProjectSection, SectionKind } from "./sections";
 // -----------------------------------------------------------------------------
 
 export interface ProjectRow {
+  id: string;
   slug: string;
   name: string;
   hashtag: string | null;
@@ -82,6 +83,7 @@ export function mapProjects(rows: ProjectRow[], regionRows: RegionRow[]): Projec
   return [...rows]
     .sort((a, b) => a.display_order - b.display_order)
     .map((r) => ({
+      id: r.id,
       slug: r.slug,
       name: r.name,
       hashtag: opt(r.hashtag),
