@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLang, useT } from "../../i18n/LanguageContext";
+import { useLang, useT } from "../../i18n/useLanguage";
 import { useProjects } from "../../hooks/useContent";
 import {
   STEP_CONFIGS,

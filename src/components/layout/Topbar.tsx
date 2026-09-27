@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { NeosLogo } from "../ui/NeosLogo";
 import { Sidebar } from "./Sidebar";
 import { LanguageSwitcher } from "../ui/LanguageSwitcher";
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 
 export function Topbar() {
   const [scrolled, setScrolled] = useState(false);

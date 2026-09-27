@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import type { Project } from "../../data/projects";
 import { useProjectsSplit } from "../../hooks/useContent";
 import { Reveal } from "../ui/Reveal";
-import { useT, useTr } from "../../i18n/LanguageContext";
+import { useT, useTr } from "../../i18n/useLanguage";
 import type { Messages } from "../../i18n/strings";
 
 interface SpecItem {

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { NeosLogo } from "../ui/NeosLogo";
 import { TopoPattern } from "../ui/TopoPattern";
 import { useProjects } from "../../hooks/useContent";
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 
 const socials = [
   { label: "Instagram", href: "https://www.instagram.com/neos.ok" },

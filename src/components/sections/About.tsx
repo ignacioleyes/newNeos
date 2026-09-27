@@ -1,7 +1,7 @@
 import { useReveal } from "../../hooks/useReveal";
 import { NeosMark } from "../ui/NeosMark";
 import { TopoPattern } from "../ui/TopoPattern";
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 
 export function About() {
   const ref = useReveal<HTMLDivElement>();

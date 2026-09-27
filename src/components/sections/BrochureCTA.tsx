@@ -1,6 +1,6 @@
 import { useReveal } from "../../hooks/useReveal";
 import { TopoPattern } from "../ui/TopoPattern";
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 
 export function BrochureCTA() {
   const ref = useReveal<HTMLDivElement>();

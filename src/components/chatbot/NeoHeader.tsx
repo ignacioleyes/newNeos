@@ -1,4 +1,4 @@
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 import { NeosMark } from "../ui/NeosMark";
 
 interface NeoHeaderProps {

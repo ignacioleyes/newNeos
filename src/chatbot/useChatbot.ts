@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLang } from "../i18n/LanguageContext";
+import { useLang } from "../i18n/useLanguage";
 import type { ConversationLog } from "../lib/supabase";
 import { INITIAL_STEP, transition } from "./steps";
 import type {

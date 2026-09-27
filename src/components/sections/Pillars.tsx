@@ -1,7 +1,7 @@
 import { pillars } from "../../data/pillars";
 import { CountUp } from "../ui/CountUp";
 import { Reveal } from "../ui/Reveal";
-import { useTr } from "../../i18n/LanguageContext";
+import { useTr } from "../../i18n/useLanguage";
 
 export function Pillars() {
   const tr = useTr();

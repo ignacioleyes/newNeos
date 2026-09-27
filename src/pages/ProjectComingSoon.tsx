@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { Project } from "../data/projects";
 import { TopoPattern } from "../components/ui/TopoPattern";
-import { useT, useTr } from "../i18n/LanguageContext";
+import { useT, useTr } from "../i18n/useLanguage";
 
 export function ProjectComingSoon({ project }: { project: Project }) {
   const t = useT();

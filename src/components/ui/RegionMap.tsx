@@ -4,7 +4,7 @@ import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import type { MapDot, RegionMapData } from "../../data/regions";
 import type { Project } from "../../data/projects";
 import { useProjects } from "../../hooks/useContent";
-import { useTr } from "../../i18n/LanguageContext";
+import { useTr } from "../../i18n/useLanguage";
 
 interface RegionMapProps {
   map: RegionMapData;

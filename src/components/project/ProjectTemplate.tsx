@@ -19,7 +19,7 @@ import { TopoPattern } from "../ui/TopoPattern";
 import { CountUp } from "../ui/CountUp";
 import { HeroImageCarousel } from "../ui/HeroImageCarousel";
 import { AmenityIcon } from "../ui/AmenityIcon";
-import { useT, useTr } from "../../i18n/LanguageContext";
+import { useT, useTr } from "../../i18n/useLanguage";
 import type { Messages } from "../../i18n/strings";
 import type { Localized } from "../../i18n/types";
 

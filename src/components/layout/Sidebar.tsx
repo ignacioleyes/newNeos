@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useProjects } from "../../hooks/useContent";
 import { NeosMark } from "../ui/NeosMark";
 import { WhatsAppIcon } from "../ui/WhatsAppIcon";
-import { useT } from "../../i18n/LanguageContext";
+import { useT } from "../../i18n/useLanguage";
 
 interface SidebarProps {
   open: boolean;
@@ -39,9 +39,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  useEffect(() => {
+  // Al cerrar el sidebar, el submenú de proyectos vuelve a colapsarse. Se
+  // ajusta durante el render comparando con el valor anterior, que es el patrón
+  // que recomienda React: desde un efecto sería un render de más, con el menú
+  // todavía abierto en el medio.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
     if (!open) setProjectsExpanded(false);
-  }, [open]);
+  }
 
   const itemBase =
     "group relative block py-2 sm:py-3 font-display text-2xl sm:text-3xl lg:text-5xl font-semibold tracking-tight hover:text-primary transition-colors";

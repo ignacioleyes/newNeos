@@ -1,4 +1,4 @@
-import { useLang } from "../../i18n/LanguageContext";
+import { useLang } from "../../i18n/useLanguage";
 
 export function LanguageSwitcher({ className }: { className?: string }) {
   const { lang, toggle } = useLang();

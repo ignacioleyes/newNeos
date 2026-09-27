@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useReveal } from "../../hooks/useReveal";
 import { TopoPattern } from "../ui/TopoPattern";
-import { useLang, useT } from "../../i18n/LanguageContext";
+import { useLang, useT } from "../../i18n/useLanguage";
 import { submitLead } from "../../lib/leadService";
 
 interface FormState {

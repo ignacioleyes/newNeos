@@ -1,7 +1,7 @@
 import { TopoPattern } from "../ui/TopoPattern";
 import { HeroImageCarousel } from "../ui/HeroImageCarousel";
 import { useProjects } from "../../hooks/useContent";
-import { useT, useTr } from "../../i18n/LanguageContext";
+import { useT, useTr } from "../../i18n/useLanguage";
 
 export function Hero() {
   const t = useT();

@@ -1,13 +1,7 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
+import { AuthCtx, type AuthState, type Employee } from "./authState";
 
 /**
  * Sesión del panel.
@@ -21,25 +15,6 @@ import { supabase } from "../lib/supabase";
  * simplemente estar autenticado. Alguien podría tener sesión válida y ningún
  * permiso, y el panel tiene que decirlo claro en vez de romperse.
  */
-
-export interface Employee {
-  id: string;
-  email: string;
-  name: string | null;
-  role: "admin" | "editor";
-  isActive: boolean;
-}
-
-interface AuthState {
-  /** true mientras no sabemos todavía si hay sesión. */
-  loading: boolean;
-  session: Session | null;
-  employee: Employee | null;
-  signIn(email: string, password: string): Promise<{ error: string | null }>;
-  signOut(): Promise<void>;
-}
-
-const AuthCtx = createContext<AuthState | null>(null);
 
 async function fetchEmployee(userId: string): Promise<Employee | null> {
   const { data, error } = await supabase
@@ -105,8 +80,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>;
 }
 
-export function useAuth(): AuthState {
-  const ctx = useContext(AuthCtx);
-  if (!ctx) throw new Error("useAuth tiene que usarse dentro de <AuthProvider>");
-  return ctx;
-}

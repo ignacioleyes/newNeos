@@ -7,7 +7,7 @@ import {
   useTogglePublished,
 } from "../../hooks/useProjectMutations";
 import { GRID_CAPACITY } from "../../lib/presentation";
-import { useTr } from "../../i18n/LanguageContext";
+import { useTr } from "../../i18n/useLanguage";
 
 /**
  * Clases base de los botones de acción.
