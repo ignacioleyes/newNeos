@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { useContentQuery, useProject, useRegions } from "../../hooks/useContent";
+import {
+  useContentQuery,
+  useProject,
+  useProjectSections,
+  useRegions,
+} from "../../hooks/useContent";
 import { useUpdateProject, type ProjectPatch } from "../../hooks/useProjectMutations";
 import {
   LocalizedField,
@@ -8,6 +13,7 @@ import {
   SelectField,
   TextField,
 } from "../../components/admin/Field";
+import { ProjectImages } from "../../components/admin/ProjectImages";
 import { PROJECT_GRADIENTS } from "../../lib/presentation";
 import type { Localized } from "../../i18n/types";
 import type { Project } from "../../data/projects";
@@ -67,6 +73,7 @@ export function AdminProjectEdit() {
   const { isPending } = useContentQuery();
   const project = useProject(slug);
   const regions = useRegions();
+  const sections = useProjectSections(slug);
   const update = useUpdateProject();
 
   const [form, setForm] = useState<FormState | null>(null);
@@ -295,21 +302,60 @@ export function AdminProjectEdit() {
         />
       </Section>
 
-      <Section title="Imágenes y links">
-        <TextField
-          label="Imagen principal"
-          hint="Ruta dentro de public/, ej. /projects/chaquies/hero.jpg"
-          value={form.heroImage}
-          onChange={(v) => set("heroImage", v)}
-        />
-        {form.heroImage.trim() !== "" && (
-          <img
-            src={form.heroImage}
-            alt=""
-            className="-mt-3 mb-6 h-32 w-full max-w-xs rounded-xl object-cover border border-base-300/60"
-          />
-        )}
-        <TextField label="Logo" value={form.logo} onChange={(v) => set("logo", v)} />
+      {/* La galería va antes de los campos: en la práctica se elige una imagen
+          de las que hay, y sólo se toca la URL a mano en casos raros. */}
+      <ProjectImages
+        slug={project.slug}
+        heroImage={form.heroImage}
+        logo={form.logo}
+        sections={sections}
+        onPickHero={(url) => set("heroImage", url)}
+        onPickLogo={(url) => set("logo", url)}
+      />
+
+      <Section title="Imágenes seleccionadas">
+        <div className="grid gap-6 sm:grid-cols-2">
+          {(
+            [
+              ["Imagen principal", form.heroImage, "heroImage"],
+              ["Logo", form.logo, "logo"],
+            ] as const
+          ).map(([label, value, key]) => (
+            <div key={key}>
+              <p className="mb-2 text-[10px] uppercase tracking-widest text-primary">
+                {label}
+              </p>
+              {value.trim() === "" ? (
+                <p className="rounded-xl border border-dashed border-base-300 p-4 text-xs opacity-50">
+                  Sin asignar. Elegí una de la galería.
+                </p>
+              ) : (
+                <>
+                  <img
+                    src={value}
+                    alt=""
+                    className="mb-2 h-28 w-full rounded-xl border border-base-300/60 object-cover"
+                  />
+                  <p className="truncate text-[10px] opacity-40" title={value}>
+                    {value.split("/").pop()}
+                  </p>
+                  {key === "logo" && (
+                    <button
+                      type="button"
+                      onClick={() => set("logo", "")}
+                      className="mt-2 text-xs opacity-60 hover:text-error hover:opacity-100 transition-colors"
+                    >
+                      Quitar logo
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Links">
         <TextField label="Brochure" value={form.brochureUrl} onChange={(v) => set("brochureUrl", v)} />
         <TextField label="Avance de obra" value={form.progressUrl} onChange={(v) => set("progressUrl", v)} />
         <TextField label="Video embebido" value={form.videoEmbed} onChange={(v) => set("videoEmbed", v)} />
