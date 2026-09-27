@@ -106,6 +106,9 @@ Las migraciones se nombran con el formato `YYYYMMDDHHMMSS_descripcion.sql` (conv
 | `20260926200100_seed_projects_from_source.sql` | Carga inicial de las 3 regiones y los 5 proyectos | ✅ Ejecutada |
 | `20260926210000_seed_project_sections.sql` | Secciones de detalle de Chaquíes y Neweken | ✅ Ejecutada |
 | `20260926220000_employees_and_rls_hardening.sql` | Tabla `employees` + RLS por pertenencia en vez de por estar logueado | ✅ Ejecutada |
+| `20260926230000_project_admin_rpcs.sql` | RPC para cambiar el destacado y reordenar en una transacción | ✅ Ejecutada |
+| `20260926234500_revoke_admin_functions_from_anon.sql` | Cierra EXECUTE de las funciones de admin para `anon` | ✅ Ejecutada |
+| `20260927000000_leads_insert_for_authenticated.sql` | INSERT de leads también para `authenticated` (el chatbot fallaba con sesión abierta) | ✅ Ejecutada |
 
 > En el proyecto actual (`ecmlccnxzgajozsrnbjn`, creado 2026-09-25) las dos primeras se aplicaron juntas a mano en el SQL Editor y después se registraron con `migration repair`; la tercera ya entró por `db push`. `yarn db:status` es la fuente de verdad — esta tabla es para leer el historial de un vistazo.
 

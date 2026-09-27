@@ -48,21 +48,33 @@ export function NeoChat({ open, onClose }: NeoChatProps) {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const endRef = useRef<HTMLDivElement>(null);
 
   // Inicia la conversación cuando se abre por primera vez (idempotente)
   useEffect(() => {
     if (open) chat.start();
   }, [open, chat]);
 
-  // Auto-scroll al fondo cuando llegan mensajes nuevos o aparece typing
+  // Auto-scroll al fondo cuando llegan mensajes nuevos o aparece typing.
+  //
+  // Va contra un centinela al final y no seteando scrollTop, porque el
+  // elemento que scrollea no es este: es el contenedor de NeoWidget que
+  // envuelve a children. Asignarle scrollTop al div de contenido no hacía
+  // nada, y por eso había que scrollear a mano. scrollIntoView sube por los
+  // ancestros hasta encontrar el que scrollea, así que no depende de la
+  // estructura.
   useEffect(() => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    endRef.current?.scrollIntoView({
+      block: "end",
+      behavior: reduced ? "auto" : "smooth",
+    });
   }, [chat.state.messages.length, chat.state.isTyping]);
 
   const body = (
-    <div ref={scrollRef} className="p-4 space-y-3">
+    <div className="p-4 space-y-3">
       {chat.state.messages.map((msg) => (
         <NeoMessage key={msg.id} from={msg.from}>
           {msg.from === "neo"
@@ -71,6 +83,8 @@ export function NeoChat({ open, onClose }: NeoChatProps) {
         </NeoMessage>
       ))}
       {chat.state.isTyping && <NeoTyping />}
+      {/* Centinela del auto-scroll */}
+      <div ref={endRef} />
     </div>
   );
 
