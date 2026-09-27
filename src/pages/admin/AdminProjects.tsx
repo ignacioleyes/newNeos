@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useAllProjects } from "../../hooks/useContent";
 import {
@@ -30,6 +30,41 @@ const ORDER_BTN =
 const ACTION_BTN =
   "btn btn-ghost btn-sm rounded-full border border-base-content/20 " +
   "transition-all duration-200 disabled:opacity-30";
+
+/**
+ * Tooltip propio, sobre el de daisyUI.
+ *
+ * Va en un wrapper y no en el propio botón porque `.btn:disabled` tiene
+ * `pointer-events: none`: un tooltip puesto sobre el botón deshabilitado no
+ * aparecería nunca — y justo ese, el que explica por qué está bloqueado, es el
+ * más útil de todos.
+ *
+ * `--tt-bg` sobreescribe el fondo por defecto (`neutral`, casi igual al de la
+ * fila) por `base-300`, que sí se despega.
+ *
+ * Ojo: el tooltip de daisyUI es CSS puro (contenido en un pseudo-elemento), y
+ * los lectores de pantalla no lo anuncian. Por eso los botones que son sólo un
+ * ícono llevan además `aria-label`.
+ */
+function Tip({
+  text,
+  position = "tooltip-top",
+  children,
+}: {
+  text?: string;
+  position?: "tooltip-top" | "tooltip-left" | "tooltip-bottom" | "tooltip-right";
+  children: ReactNode;
+}) {
+  if (!text) return <>{children}</>;
+  return (
+    <span
+      className={`tooltip ${position} [--tt-bg:var(--color-base-300)]`}
+      data-tip={text}
+    >
+      {children}
+    </span>
+  );
+}
 
 /**
  * Listado de proyectos del panel.
@@ -158,59 +193,73 @@ export function AdminProjects() {
               <div className="flex items-center gap-2 shrink-0">
                 {/* Destacar. La estrella crece y se pinta: previsualiza el
                     estado en el que va a quedar. */}
-                <button
-                  type="button"
-                  disabled={p.isFeatured || busy || !p.isPublished}
-                  title={
+                <Tip
+                  text={
                     !p.isPublished
                       ? "Publicalo antes de destacarlo"
-                      : "Poner como destacado"
+                      : p.isFeatured
+                        ? "Ya es el destacado"
+                        : "Poner como destacado"
                   }
-                  onClick={() => run(setFeatured.mutateAsync(p.slug))}
-                  className={`${ACTION_BTN} text-base leading-none enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10 motion-safe:enabled:hover:scale-110`}
                 >
-                  ★
-                </button>
+                  <button
+                    type="button"
+                    aria-label={`Destacar ${p.name}`}
+                    disabled={p.isFeatured || busy || !p.isPublished}
+                    onClick={() => run(setFeatured.mutateAsync(p.slug))}
+                    className={`${ACTION_BTN} text-base leading-none enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10 motion-safe:enabled:hover:scale-110`}
+                  >
+                    ★
+                  </button>
+                </Tip>
 
                 {/* Publicar y despublicar son la misma acción con signo
                     opuesto, así que el hover las distingue por color: rosa
                     suma a la landing, ámbar la saca. Ámbar y no rojo porque es
-                    reversible — no se borra nada. */}
-                <button
-                  type="button"
-                  disabled={busy || (p.isFeatured && p.isPublished)}
-                  title={
+                    reversible — no se borra nada.
+
+                    El tooltip sólo aparece cuando está bloqueado: el botón ya
+                    dice qué hace, así que explicarlo de nuevo sería ruido. */}
+                <Tip
+                  text={
                     p.isFeatured && p.isPublished
-                      ? "No se puede despublicar el destacado: elegí otro destacado primero"
+                      ? "Elegí otro destacado antes de despublicar este"
                       : undefined
                   }
-                  onClick={() =>
-                    run(
-                      togglePublished.mutateAsync({
-                        slug: p.slug,
-                        published: !p.isPublished,
-                      })
-                    )
-                  }
-                  className={`${ACTION_BTN} ${
-                    p.isPublished
-                      ? "enabled:hover:text-warning enabled:hover:border-warning enabled:hover:bg-warning/10"
-                      : "enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10"
-                  }`}
                 >
-                  {p.isPublished ? "Despublicar" : "Publicar"}
-                </button>
+                  <button
+                    type="button"
+                    disabled={busy || (p.isFeatured && p.isPublished)}
+                    onClick={() =>
+                      run(
+                        togglePublished.mutateAsync({
+                          slug: p.slug,
+                          published: !p.isPublished,
+                        })
+                      )
+                    }
+                    className={`${ACTION_BTN} ${
+                      p.isPublished
+                        ? "enabled:hover:text-warning enabled:hover:border-warning enabled:hover:bg-warning/10"
+                        : "enabled:hover:text-primary enabled:hover:border-primary enabled:hover:bg-primary/10"
+                    }`}
+                  >
+                    {p.isPublished ? "Despublicar" : "Publicar"}
+                  </button>
+                </Tip>
 
                 {/* Abre en otra pestaña: la flecha se va en diagonal, hacia
                     donde apunta. */}
-                <Link
-                  to={`/proyectos/${p.slug}`}
-                  target="_blank"
-                  title="Ver en la landing"
-                  className={`${ACTION_BTN} text-base leading-none hover:text-primary hover:border-primary hover:bg-primary/10 motion-safe:hover:-translate-y-0.5 motion-safe:hover:translate-x-0.5`}
-                >
-                  ↗
-                </Link>
+                <Tip text="Ver en la landing" position="tooltip-left">
+                  <Link
+                    to={`/proyectos/${p.slug}`}
+                    target="_blank"
+                    aria-label={`Ver ${p.name} en la landing`}
+                    className={`${ACTION_BTN} text-base leading-none hover:text-primary hover:border-primary hover:bg-primary/10 motion-safe:hover:-translate-y-0.5 motion-safe:hover:translate-x-0.5`}
+                  >
+                    ↗
+                  </Link>
+                </Tip>
               </div>
             </div>
           </li>
