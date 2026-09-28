@@ -10,7 +10,7 @@ import type { SectionKind } from "./sections";
  */
 
 export const SECTION_LABELS: Record<SectionKind, string> = {
-  hero: "Hero",
+  hero: "Portada",
   specs: "Barra de datos",
   what_is: "¿Qué es?",
   context: "Contexto",
@@ -23,7 +23,7 @@ export const SECTION_LABELS: Record<SectionKind, string> = {
 
 export const SECTION_HINTS: Record<SectionKind, string> = {
   hero: "La portada: carrusel de imágenes, título y los dos botones.",
-  specs: "La franja de datos bajo el hero. Ubicación, unidades y tipología salen del proyecto.",
+  specs: "La franja de datos bajo la portada. Ubicación, unidades y tipología salen del proyecto.",
   what_is: "Texto largo con métricas y una imagen al costado.",
   context: "Por qué invertir en la zona: tarjetas con razones.",
   amenities: "Grilla de amenities. Salen de los que tenga cargados el proyecto.",

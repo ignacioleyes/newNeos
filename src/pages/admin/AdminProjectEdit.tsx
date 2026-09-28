@@ -213,14 +213,14 @@ export function AdminProjectEdit() {
         <TextField label="Nombre" value={form.name} onChange={(v) => set("name", v)} />
         <TextField
           label="Hashtag"
-          hint="Opcional. Aparece en el card y arriba del pull quote. Si no tiene, ahí se muestra la ubicación."
+          hint="Opcional. Aparece en el card y arriba de la frase destacada. Si no tiene, ahí se muestra la ubicación."
           placeholder="#stayincafayate"
           value={form.hashtag}
           onChange={(v) => set("hashtag", v)}
         />
         <TextField
-          label="Slug"
-          hint="No se puede editar acá: cambiarlo rompería los links ya compartidos y las URLs indexadas por Google. Si hace falta cambiarlo, avisale a quien mantiene el sitio."
+          label="Dirección web"
+          hint="No se puede editar acá: cambiarla rompería los links que ya se compartieron y las direcciones que Google tiene indexadas. Si hace falta cambiarla, avisale a quien mantiene el sitio."
           value={project.slug}
           onChange={() => {}}
           disabled
@@ -229,14 +229,14 @@ export function AdminProjectEdit() {
 
       <Section title="Textos">
         <LocalizedField
-          label="Tagline"
+          label="Frase principal"
           hint="El titular grande de la página de detalle y el texto del card."
           value={form.tagline}
           onChange={(v) => set("tagline", v)}
         />
         <LocalizedField
           label="Descripción"
-          hint="El párrafo del card destacado y del hero."
+          hint="El párrafo del card destacado y de la portada."
           multiline
           value={form.description}
           onChange={(v) => set("description", v)}
@@ -250,7 +250,7 @@ export function AdminProjectEdit() {
           onChange={(v) => set("about", v)}
         />
         <LocalizedListField
-          label="Highlights"
+          label="Puntos destacados"
           hint="Uno por línea. El card muestra los primeros 2 o 3 según su tamaño."
           value={form.highlights}
           onChange={(v) => set("highlights", v)}
@@ -371,14 +371,14 @@ export function AdminProjectEdit() {
       <Section title="Links">
         <TextField label="Brochure" value={form.brochureUrl} onChange={(v) => set("brochureUrl", v)} />
         <TextField label="Avance de obra" value={form.progressUrl} onChange={(v) => set("progressUrl", v)} />
-        <TextField label="Video embebido" value={form.videoEmbed} onChange={(v) => set("videoEmbed", v)} />
+        <TextField label="Video de YouTube" value={form.videoEmbed} onChange={(v) => set("videoEmbed", v)} />
         <TextField label="Google Maps" value={form.mapsUrl} onChange={(v) => set("mapsUrl", v)} />
       </Section>
 
       <Section title="Color">
         <SelectField
-          label="Gradiente"
-          hint="Es una lista cerrada: Tailwind sólo incluye en el CSS las clases que encuentra escritas en el código, así que un color inventado acá no existiría."
+          label="Color del proyecto"
+          hint="Es una lista cerrada de combinaciones preparadas. No se pueden inventar colores nuevos desde acá: hay que agregarlos al código primero."
           value={form.gradientKey}
           onChange={(v) => set("gradientKey", v)}
           options={GRADIENT_OPTIONS}

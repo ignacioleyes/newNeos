@@ -1,4 +1,5 @@
-import type { ProjectSection, SectionKind } from "./sections";
+import type { ProjectSection } from "./sections";
+import { SECTION_LABELS } from "./sectionDefaults";
 
 /**
  * Dónde se está usando una imagen dentro de un proyecto.
@@ -14,18 +15,6 @@ import type { ProjectSection, SectionKind } from "./sections";
  * que nadie lo note. Una URL completa es lo bastante distintiva como para que
  * no haya falsos positivos.
  */
-
-const SECTION_LABELS: Record<SectionKind, string> = {
-  hero: "Hero",
-  specs: "Ficha",
-  what_is: "¿Qué es?",
-  context: "Contexto",
-  amenities: "Amenities",
-  pull_quote: "Frase destacada",
-  masterplan: "Master plan",
-  gallery: "Galería",
-  cta: "Cierre",
-};
 
 export function findImageUsages(
   url: string,

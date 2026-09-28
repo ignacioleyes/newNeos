@@ -131,8 +131,8 @@ export function AdminProjectNew() {
       />
 
       <TextField
-        label="URL"
-        hint={`Así va a quedar: /proyectos/${effectiveSlug || "…"}. Se arma sola con el nombre; cambiala sólo si hace falta, porque después no se puede modificar sin romper los links compartidos.`}
+        label="Dirección web"
+        hint={`Así va a quedar: /proyectos/${effectiveSlug || "…"}. Se arma sola con el nombre; cambiala sólo si hace falta, porque después no se puede modificar sin romper los links que ya se compartieron.`}
         value={effectiveSlug}
         onChange={(v) => {
           setSlugTouched(true);
@@ -141,17 +141,17 @@ export function AdminProjectNew() {
       />
       {effectiveSlug !== "" && !slugValid && (
         <p className="-mt-4 mb-6 text-xs text-warning">
-          La URL sólo admite minúsculas, números y guiones.
+          La dirección sólo admite minúsculas, números y guiones.
         </p>
       )}
       {taken && (
         <p className="-mt-4 mb-6 text-xs text-error">
-          Ya hay un proyecto con esta URL.
+          Ya hay un proyecto con esta dirección.
         </p>
       )}
 
       <LocalizedField
-        label="Tagline"
+        label="Frase principal"
         hint="El titular del card y de la página de detalle."
         value={tagline}
         onChange={setTagline}

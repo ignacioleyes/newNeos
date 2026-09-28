@@ -135,8 +135,8 @@ function HeroEditor({
   return (
     <>
       <p className="mb-4 text-xs opacity-55 leading-relaxed">
-        El título y la descripción del hero salen del proyecto (tagline y
-        descripción). Acá se configura el carrusel y los botones.
+        El título y el texto de la portada salen del proyecto: son su frase
+        principal y su descripción. Acá se configuran el carrusel y los botones.
       </p>
 
       <p className="mb-2 text-[10px] uppercase tracking-widest text-primary">
