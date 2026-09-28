@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { listProjectImages } from "../../lib/imageUpload";
+import { useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { listProjectImages, uploadProjectImage } from "../../lib/imageUpload";
 
 /**
- * Elige una imagen de las que ya tiene el proyecto.
+ * Elige una imagen del proyecto, o sube una nueva sin salir de acá.
  *
  * Editar galerías pegando URLs a mano sería inusable: son URLs largas de
- * Storage y nadie las recuerda. Acá se ven las miniaturas y se elige.
+ * Storage y nadie las recuerda.
  *
- * Deliberadamente no sube: para eso está la galería del formulario del
- * proyecto, que además muestra el ahorro de peso y los usos de cada imagen.
- * Duplicar la subida en cada campo repartiría esa información en diez lugares.
+ * La primera versión no dejaba subir: la idea era que la subida viviera en un
+ * solo lugar (la galería del formulario del proyecto) para no repartir en diez
+ * pantallas la info de ahorro de peso y de usos. Estaba mal. Los borradores de
+ * sección viven en el estado del componente, así que irse a otra página a subir
+ * una imagen hace perder lo que se estaba editando — justo en el peor momento.
+ * La galería del formulario sigue siendo el lugar para administrar (ver todo,
+ * borrar, saber dónde se usa cada una); acá sólo se agrega lo que hace falta.
  */
 export function ImagePicker({
   slug,
@@ -26,11 +30,43 @@ export function ImagePicker({
   label?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
+
   const { data: images } = useQuery({
     queryKey: ["project-images", slug],
     queryFn: () => listProjectImages(slug),
     staleTime: 60_000,
   });
+
+  async function handleFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    setError(null);
+    try {
+      // Con varias, la última queda seleccionada: es la que quedó "arriba" en
+      // la cabeza de quien las eligió.
+      let lastUrl = "";
+      for (const file of Array.from(files)) {
+        const { image } = await uploadProjectImage(slug, file);
+        lastUrl = image.url;
+      }
+      // Invalida la lista compartida: la galería del formulario y los demás
+      // selectores de la página ven las nuevas sin recargar.
+      await queryClient.invalidateQueries({ queryKey: ["project-images", slug] });
+      if (lastUrl) {
+        onChange(lastUrl);
+        setOpen(false);
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "No se pudo subir la imagen.");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
 
   return (
     <div className="mb-4">
@@ -55,6 +91,14 @@ export function ImagePicker({
           >
             {open ? "Cerrar" : value ? "Cambiar" : "Elegir"}
           </button>
+          <button
+            type="button"
+            disabled={uploading}
+            onClick={() => inputRef.current?.click()}
+            className="btn btn-ghost btn-xs rounded-full border border-base-content/20 enabled:hover:border-primary enabled:hover:text-primary transition-colors disabled:opacity-40"
+          >
+            {uploading ? "Subiendo…" : "Subir"}
+          </button>
           {value && onClear && (
             <button
               type="button"
@@ -67,17 +111,40 @@ export function ImagePicker({
         </div>
       </div>
 
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        hidden
+        onChange={(e) => void handleFiles(e.target.files)}
+      />
+
+      {error && (
+        <p role="alert" className="mt-2 text-xs text-error leading-snug">
+          {error}
+        </p>
+      )}
+
       {open && (
         <div className="mt-3 rounded-xl border border-base-300/60 bg-base-100 p-3">
           {!images ? (
             <p className="text-xs opacity-50">Cargando…</p>
-          ) : images.length === 0 ? (
-            <p className="text-xs opacity-60">
-              Este proyecto no tiene imágenes. Subilas desde la sección Imágenes
-              del formulario del proyecto.
-            </p>
           ) : (
             <ul className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+              {/* Subir como primera celda: si la galería está vacía, la acción
+                  que hace falta está donde se la busca. */}
+              <li>
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => inputRef.current?.click()}
+                  className="grid aspect-[4/3] w-full place-items-center rounded-lg border border-dashed border-base-300 text-center text-[10px] leading-tight opacity-70 transition-colors enabled:hover:border-primary enabled:hover:text-primary disabled:opacity-40"
+                >
+                  {uploading ? "Subiendo…" : "+ Subir"}
+                </button>
+              </li>
+
               {images.map((img) => (
                 <li key={img.path}>
                   <button
@@ -106,6 +173,12 @@ export function ImagePicker({
               ))}
             </ul>
           )}
+
+          <p className="mt-3 text-[10px] opacity-45 leading-snug">
+            Se achican a 1920 px y se convierten a WebP antes de subir. Para
+            borrar o ver dónde se usa cada una, andá a Imágenes en el formulario
+            del proyecto.
+          </p>
         </div>
       )}
     </div>

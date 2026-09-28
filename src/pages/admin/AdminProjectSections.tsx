@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import {
   useContentQuery,
@@ -48,6 +48,18 @@ export function AdminProjectSections() {
   const [savedId, setSavedId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+
+  const hasDrafts = Object.keys(drafts).length > 0;
+
+  // Los borradores viven en el estado del componente, así que se pierden al
+  // salir. Avisar es lo mínimo; persistirlos sería mejor pero abre la pregunta
+  // de qué pasa cuando el contenido cambió en la base mientras tanto.
+  useEffect(() => {
+    if (!hasDrafts) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [hasDrafts]);
 
   if (!project) {
     if (isPending) return null;
@@ -129,6 +141,16 @@ export function AdminProjectSections() {
       <div className="mb-8">
         <Link
           to={`/admin/proyectos/${project.slug}`}
+          onClick={(e) => {
+            if (
+              hasDrafts &&
+              !window.confirm(
+                "Tenés secciones sin guardar. Si salís se pierden los cambios."
+              )
+            ) {
+              e.preventDefault();
+            }
+          }}
           className="text-xs uppercase tracking-widest opacity-60 hover:opacity-100 hover:text-primary transition-colors"
         >
           ← {project.name}
