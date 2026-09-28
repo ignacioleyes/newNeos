@@ -1,8 +1,16 @@
 name: Supabase keepalive
 
-# El free tier de Supabase pausa los proyectos después de ~7 días sin
-# actividad. Este workflow le pega a la función public.ping() dos veces por
-# semana para que eso no pase — el proyecto anterior se perdió así.
+# Dos chequeos periódicos de cosas que fallan en silencio.
+#
+# 1. KEEPALIVE. El free tier de Supabase pausa los proyectos después de ~7 días
+#    sin actividad. Este workflow le pega a la función public.ping() dos veces
+#    por semana para que eso no pase — el proyecto anterior se perdió así.
+#
+# 2. TILES DEL MAPA. CARTO, el proveedor anterior, pasó a exigir API key y
+#    empezó a devolver —con HTTP 200— un PNG de marca de agua en lugar del
+#    mapa. Los mapas estuvieron rotos en producción sin que nada lo reportara:
+#    no hay error en consola ni request fallida cuando el servidor responde 200
+#    con una imagen. El chequeo de abajo detecta exactamente ese modo de falla.
 #
 # Necesita dos secrets del repo (Settings → Secrets and variables → Actions):
 #   SUPABASE_URL       https://xxxxxxxx.supabase.co
@@ -70,3 +78,59 @@ jobs:
           echo "  404     → falta la función ping(). Correr la migración"
           echo "            supabase/migrations/20260925150000_add_ping_function.sql"
           exit 1
+
+      # `always()` para que corra aunque el ping haya fallado: son dos cosas
+      # independientes y conviene enterarse de ambas en el mismo run.
+      - name: Verificar los tiles del mapa
+        if: always()
+        run: |
+          set -uo pipefail
+
+          BASE="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile"
+          # Dos tiles testigo de zonas muy distintas y con contenido: uno sobre
+          # Salta a zoom 11 (el que la landing realmente pide) y otro sobre el
+          # norte argentino a zoom 7. Tienen que verse distintos entre sí.
+          TILE_A="11/1169/651"
+          TILE_B="7/73/40"
+
+          bajar() {
+            curl -sS --retry 3 --retry-delay 5 --retry-connrefused --max-time 30 \
+              -o "$2" -w '%{http_code}' "$BASE/$1" || echo "000"
+          }
+
+          code_a=$(bajar "$TILE_A" a.png)
+          code_b=$(bajar "$TILE_B" b.png)
+          size_a=$(wc -c < a.png 2>/dev/null || echo 0)
+          size_b=$(wc -c < b.png 2>/dev/null || echo 0)
+          sha_a=$(sha256sum a.png | cut -d' ' -f1)
+          sha_b=$(sha256sum b.png | cut -d' ' -f1)
+
+          echo "tile A ($TILE_A): HTTP $code_a, $size_a bytes"
+          echo "tile B ($TILE_B): HTTP $code_b, $size_b bytes"
+
+          if [ "$code_a" != "200" ] || [ "$code_b" != "200" ]; then
+            echo "::error::El servidor de tiles no responde 200 (A=$code_a B=$code_b)."
+            echo "  Los mapas de la sección de regiones van a verse vacíos."
+            exit 1
+          fi
+
+          # Un tile real pesa unos pocos KB; si viene casi vacío, algo cambió.
+          if [ "$size_a" -lt 500 ] || [ "$size_b" -lt 500 ]; then
+            echo "::error::Los tiles llegan casi vacíos (A=$size_a B=$size_b bytes)."
+            exit 1
+          fi
+
+          # LA PRUEBA QUE IMPORTA: dos tiles de lugares distintos tienen que
+          # dar imágenes distintas. Si son idénticas, el servidor está
+          # devolviendo siempre lo mismo — una marca de agua o un placeholder
+          # de error — y eso es justo lo que pasó con CARTO.
+          if [ "$sha_a" = "$sha_b" ]; then
+            echo "::error::Los dos tiles son la MISMA imagen."
+            echo "  El proveedor está devolviendo un placeholder en vez del mapa,"
+            echo "  probablemente porque ahora pide API key. Los mapas se ven rotos"
+            echo "  aunque las requests den 200."
+            echo "  Arreglo: cambiar el proveedor en src/components/ui/RegionMap.tsx"
+            exit 1
+          fi
+
+          echo "Tiles OK: dos zonas distintas devuelven imágenes distintas."
