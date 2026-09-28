@@ -120,3 +120,50 @@ export function useUpdateProject() {
     onSuccess: invalidate,
   });
 }
+
+/**
+ * Crea un proyecto con lo mínimo indispensable.
+ *
+ * Arranca despublicado y sin imagen: las fotos se suben después, cuando ya
+ * existe la carpeta del slug en Storage. El resto de los campos toman los
+ * defaults de la tabla.
+ */
+export interface NewProject {
+  slug: string;
+  name: string;
+  tagline: Localized<string>;
+  description: Localized<string>;
+  location: Localized<string>;
+  region_slug: string;
+  status: string;
+}
+
+export function useCreateProject() {
+  const invalidate = useInvalidateContent();
+  return useMutation({
+    mutationFn: async (project: NewProject) => {
+      const { data, error } = await supabase
+        .from("projects")
+        .insert(project)
+        .select("slug");
+
+      if (error) {
+        // 23505 es violación de unicidad: el único índice único que puede
+        // chocar acá es el del slug.
+        if (error.code === "23505") {
+          throw new Error(
+            `Ya existe un proyecto con la URL «${project.slug}». Elegí otra.`
+          );
+        }
+        throw error;
+      }
+      if (!data || data.length === 0) {
+        throw new Error(
+          "No se pudo crear: la base rechazó la operación. Puede ser un problema de permisos."
+        );
+      }
+      return data[0].slug as string;
+    },
+    onSuccess: invalidate,
+  });
+}

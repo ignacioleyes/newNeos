@@ -11,6 +11,7 @@ import { AdminHome } from "./pages/admin/AdminHome";
 import { AdminProjects } from "./pages/admin/AdminProjects";
 import { AdminProjectEdit } from "./pages/admin/AdminProjectEdit";
 import { AdminProjectSections } from "./pages/admin/AdminProjectSections";
+import { AdminProjectNew } from "./pages/admin/AdminProjectNew";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { AuthProvider } from "./auth/AuthContext";
 
@@ -47,6 +48,7 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminHome />} />
               <Route path="proyectos" element={<AdminProjects />} />
+              <Route path="proyectos/nuevo" element={<AdminProjectNew />} />
               <Route path="proyectos/:slug" element={<AdminProjectEdit />} />
               <Route path="proyectos/:slug/secciones" element={<AdminProjectSections />} />
             </Route>

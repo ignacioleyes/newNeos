@@ -103,11 +103,16 @@ export function AdminProjects() {
 
   return (
     <>
-      <div className="flex flex-wrap items-baseline justify-between gap-4 mb-2">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
         <h1 className="font-display text-3xl font-semibold tracking-tight">Proyectos</h1>
-        <p className="text-sm opacity-60">
-          {projects.filter((p) => p.isPublished).length} publicados de {projects.length}
-        </p>
+        <div className="flex items-center gap-4">
+          <p className="text-sm opacity-60">
+            {projects.filter((p) => p.isPublished).length} publicados de {projects.length}
+          </p>
+          <Link to="/admin/proyectos/nuevo" className="btn btn-primary btn-sm rounded-full px-5">
+            + Nuevo proyecto
+          </Link>
+        </div>
       </div>
       <p className="opacity-60 mb-8 max-w-2xl leading-relaxed">
         El orden de esta lista es el de la grilla de la home. Los primeros{" "}
@@ -161,11 +166,17 @@ export function AdminProjects() {
                 </button>
               </div>
 
-              <img
-                src={p.heroImage}
-                alt=""
-                className="h-12 w-12 shrink-0 rounded-lg object-cover"
-              />
+              {p.heroImage ? (
+                <img
+                  src={p.heroImage}
+                  alt=""
+                  className="h-12 w-12 shrink-0 rounded-lg object-cover"
+                />
+              ) : (
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-lg border border-dashed border-base-300 text-[9px] leading-tight opacity-40">
+                  sin foto
+                </span>
+              )}
 
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-2 font-medium truncate">
@@ -221,16 +232,25 @@ export function AdminProjects() {
 
                     El tooltip sólo aparece cuando está bloqueado: el botón ya
                     dice qué hace, así que explicarlo de nuevo sería ruido. */}
+                {/* No se puede publicar sin imagen principal: el card de la
+                    grilla y el carrusel del hero la necesitan. Es la única
+                    condición que el borrador no cumple todavía. */}
                 <Tip
                   text={
                     p.isFeatured && p.isPublished
                       ? "Elegí otro destacado antes de despublicar este"
-                      : undefined
+                      : !p.isPublished && !p.heroImage
+                        ? "Necesita una imagen principal antes de publicarse"
+                        : undefined
                   }
                 >
                   <button
                     type="button"
-                    disabled={busy || (p.isFeatured && p.isPublished)}
+                    disabled={
+                      busy ||
+                      (p.isFeatured && p.isPublished) ||
+                      (!p.isPublished && !p.heroImage)
+                    }
                     onClick={() =>
                       run(
                         togglePublished.mutateAsync({

@@ -34,7 +34,7 @@ export interface ProjectRow {
   amenities: Project["amenities"];
   services: Project["services"] | null;
   highlights: Project["highlights"];
-  hero_image: string;
+  hero_image: string | null;
   logo: string | null;
   brochure_url: string | null;
   progress_url: string | null;
@@ -102,7 +102,10 @@ export function mapProjects(rows: ProjectRow[], regionRows: RegionRow[]): Projec
       amenities: r.amenities ?? [],
       services: opt(r.services),
       highlights: r.highlights,
-      heroImage: r.hero_image,
+      // Cadena vacía en vez de null: el tipo sigue siendo `string` y el chequeo
+      // queda en un solo lugar. Vacío significa "todavía sin imagen", y sólo
+      // pasa en borradores — el panel no deja publicar sin ella.
+      heroImage: r.hero_image ?? "",
       logo: opt(r.logo),
       brochureUrl: opt(r.brochure_url),
       progressUrl: opt(r.progress_url),
