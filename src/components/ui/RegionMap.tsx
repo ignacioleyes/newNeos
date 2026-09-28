@@ -34,11 +34,27 @@ const FINALIZED_ICON = L.divIcon({
   html: `<div style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.85);border:2px solid #0a0a0a;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>`,
 });
 
-const CARTO_DARK_URL =
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png";
+/**
+ * Tiles del mapa.
+ *
+ * Antes usaba CartoDB Dark Matter, que era gratis y sin key. CARTO pasó a
+ * exigir API key y ahora devuelve, con HTTP 200, un PNG de marca de agua que
+ * dice "API KEY REQUIRED" en lugar del mapa. Como el status sigue siendo 200 y
+ * la imagen carga, no hay error en consola ni request fallida: los mapas
+ * simplemente se ven mal y nada lo reporta.
+ *
+ * Esri World Dark Gray Canvas es el reemplazo: mismo registro visual (gris
+ * oscuro, bajo contraste, pensado justo para superponerle datos) y no pide key.
+ *
+ * OJO con el orden de las coordenadas: Esri usa {z}/{y}/{x}, no {z}/{x}/{y}
+ * como CARTO y OSM. Invertirlo no falla — devuelve tiles de otro lugar del
+ * planeta, que es bastante peor que un error.
+ */
+const DARK_TILES_URL =
+  "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
 
-const CARTO_ATTRIBUTION =
-  '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+const DARK_TILES_ATTRIBUTION =
+  '&copy; <a href="https://www.esri.com/">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>';
 
 function findProject(projects: Project[], slug: string | undefined): Project | null {
   if (!slug) return null;
@@ -71,11 +87,12 @@ export function RegionMap({ map, dots, className }: RegionMapProps) {
         attributionControl={true}
         style={{ height: "100%", width: "100%" }}
       >
+        {/* Sin `subdomains`: Esri sirve desde un solo host, a diferencia de
+            CARTO que repartía entre a/b/c/d. */}
         <TileLayer
-          url={CARTO_DARK_URL}
-          attribution={CARTO_ATTRIBUTION}
-          subdomains="abcd"
-          maxZoom={20}
+          url={DARK_TILES_URL}
+          attribution={DARK_TILES_ATTRIBUTION}
+          maxZoom={16}
         />
         {dots.map((dot) => {
           const project = findProject(projects, dot.projectSlug);
